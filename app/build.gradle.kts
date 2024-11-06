@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -21,15 +23,18 @@ android {
 
     buildTypes {
         debug {
+            val apiKey = gradleLocalProperties(rootDir, providers).getProperty("API_KEY")
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
             buildConfigField("String", "BASE_URL", "\"https://dane.biznes.gov.pl/api/ceidg/v2\"")
         }
         release {
+            val apiKey = gradleLocalProperties(rootDir, providers).getProperty("API_KEY")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
             buildConfigField("String", "BASE_URL", "\"https://dane.biznes.gov.pl/api/ceidg/v2\"")
         }
     }
