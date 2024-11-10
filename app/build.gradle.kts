@@ -70,6 +70,8 @@ dependencies {
     implementation(libs.bundles.koin)
 
     implementation(libs.bundles.ktor)
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
 
     testImplementation(libs.junit)
 
