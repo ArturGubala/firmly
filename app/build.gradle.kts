@@ -67,6 +67,9 @@ dependencies {
 
     coreLibraryDesugaring(libs.desugar.jdk.libs)
 
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.adaptive.navigationSuite)
+
     implementation(libs.bundles.koin)
 
     implementation(libs.bundles.ktor)
@@ -74,6 +77,8 @@ dependencies {
     implementation(libs.room.ktx)
 
     testImplementation(libs.junit)
+
+    implementation(libs.androidx.navigation.compose)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
