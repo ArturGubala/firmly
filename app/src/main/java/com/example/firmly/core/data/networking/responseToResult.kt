@@ -8,7 +8,7 @@ import io.ktor.client.statement.HttpResponse
 
 suspend inline fun <reified T> responseToResult(
     response: HttpResponse
-): Result<T, DataError> {
+): Result<T, DataError.Network> {
     return when(response.status.value) {
         in 200..299 -> {
             try {

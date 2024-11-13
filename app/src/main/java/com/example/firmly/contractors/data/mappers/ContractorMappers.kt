@@ -1,5 +1,8 @@
-package com.example.firmly.contractors.data.remote.dto
+package com.example.firmly.contractors.data.mappers
 
+import com.example.firmly.contractors.data.networking.dto.ContractorDto
+import com.example.firmly.contractors.data.networking.dto.MultipleContractorsResponse
+import com.example.firmly.contractors.data.networking.dto.SingleContractorResponse
 import com.example.firmly.core.domain.contractor.ContractorDetail
 import com.example.firmly.core.domain.contractor.ContractorListItem
 

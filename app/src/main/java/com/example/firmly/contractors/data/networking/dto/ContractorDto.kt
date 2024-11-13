@@ -1,4 +1,4 @@
-package com.example.firmly.contractors.data.remote.dto
+package com.example.firmly.contractors.data.networking.dto
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable

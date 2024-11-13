@@ -10,7 +10,7 @@ import kotlin.coroutines.coroutineContext
 
 suspend inline fun <reified T> safeCall(
     execute: () -> HttpResponse
-): Result<T, DataError> {
+): Result<T, DataError.Network> {
     val response = try {
         execute()
     } catch(e: UnresolvedAddressException) {
