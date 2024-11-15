@@ -7,11 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -22,8 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.compose.material3.Text
-import androidx.compose.ui.platform.testTag
+import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,27 +42,12 @@ fun FirmlyNavigationWrapper(
         Scaffold(
             modifier = Modifier,
             topBar = {
-                CenterAlignedTopAppBar(
-                    title = { Text(text = currentDestination?.route?.split(".")?.last() ?: "Top App Bar") },
-                    navigationIcon = {
-                        IconButton(onClick = { }) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "",
-                                tint = MaterialTheme.colorScheme.onSurface,
-                            )
-                        }
-                    },
-                    actions = {
-                        IconButton(onClick = {  }) {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = "",
-                                tint = MaterialTheme.colorScheme.onSurface,
-                            )
-                        }
-                    },
-                    modifier = Modifier.testTag("firmlyTopAppBar"),
+                FirmlyTopAppBar(
+                    titleRes = getTopLevelDestination(currentDestination).iconTextId,
+                    navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
+                    navigationIconContentDescription = "Navigation icon",
+                    actionIcon = Icons.Default.Search,
+                    actionIconContentDescription = "Action icon",
                 )
             }
         ) { values ->
@@ -87,14 +68,14 @@ fun FirmlyBottomNavigationBar(
     navigateToTopLevelDestination: (FirmlyTopLevelDestination) -> Unit
 ) {
     NavigationBar(modifier = Modifier.fillMaxWidth()) {
-        TOP_LEVEL_DESTINATIONS.forEach { replyDestination ->
+        TOP_LEVEL_DESTINATIONS.forEach { firmlyDestination ->
             NavigationBarItem(
-                selected = currentDestination.hasRoute(replyDestination),
-                onClick = { navigateToTopLevelDestination(replyDestination) },
+                selected = currentDestination.hasRoute(firmlyDestination),
+                onClick = { navigateToTopLevelDestination(firmlyDestination) },
                 icon = {
                     Icon(
-                        imageVector = replyDestination.selectedIcon,
-                        contentDescription = stringResource(id = replyDestination.iconTextId)
+                        imageVector = firmlyDestination.selectedIcon,
+                        contentDescription = stringResource(id = firmlyDestination.iconTextId)
                     )
                 }
             )
@@ -104,3 +85,13 @@ fun FirmlyBottomNavigationBar(
 
 fun NavDestination?.hasRoute(destination: FirmlyTopLevelDestination): Boolean =
     this?.hasRoute(destination.route::class) ?: false
+
+fun getTopLevelDestination(destination: NavDestination?): FirmlyTopLevelDestination {
+    return when (destination?.route?.split(".")?.last()?.uppercase()) {
+        "HOME" -> TOP_LEVEL_DESTINATIONS.first { it.route is Route.Home }
+        "CONTRACTORS" -> TOP_LEVEL_DESTINATIONS.first { it.route is Route.Contractors }
+        "SEARCH" -> TOP_LEVEL_DESTINATIONS.first { it.route is Route.Search }
+        "SETTINGS" -> TOP_LEVEL_DESTINATIONS.first { it.route is Route.Settings }
+        else -> TOP_LEVEL_DESTINATIONS.first { it.route is Route.Home }
+    }
+}
