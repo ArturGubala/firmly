@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun PlaceholderScreen(
     routeName: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize(),

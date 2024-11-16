@@ -12,8 +12,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            val appState = rememberFirmlyAppState()
+
             FirmlyTheme {
-                FirmlyApp()
+                FirmlyApp(appState)
             }
         }
     }
