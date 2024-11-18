@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.firmly.AppBarState
 import com.example.firmly.ui.theme.FirmlyTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,6 +33,7 @@ fun FirmlyTopAppBar(
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
     onNavigationClick: () -> Unit = {},
     onActionClick: () -> Unit = {},
+    appBarState: AppBarState
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(id = titleRes)) },
@@ -45,17 +47,20 @@ fun FirmlyTopAppBar(
                 )
             }
         },
-        actions = {
-            IconButton(onClick = onActionClick) {
-                Icon(
-                    imageVector = actionIcon,
-                    contentDescription = actionIconContentDescription,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-        },
+//        actions = {
+//            IconButton(onClick = onActionClick) {
+//                Icon(
+//                    imageVector = actionIcon,
+//                    contentDescription = actionIconContentDescription,
+//                    tint = MaterialTheme.colorScheme.onSurface,
+//                )
+//            }
+//        },
         colors = colors,
         modifier = modifier.testTag("niaTopAppBar"),
+        actions = {
+            appBarState.actions?.invoke(this)
+        },
     )
 }
 
@@ -70,6 +75,7 @@ private fun FirmlyTopAppBarPreview() {
             navigationIconContentDescription = "Navigation icon",
             actionIcon = Icons.Default.Search,
             actionIconContentDescription = "Action icon",
+            appBarState = AppBarState()
         )
     }
 }

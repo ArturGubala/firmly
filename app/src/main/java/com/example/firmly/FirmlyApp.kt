@@ -2,6 +2,7 @@ package com.example.firmly
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -22,6 +23,10 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.adaptive.WindowAdaptiveInfo
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,17 +36,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.compose.NavHost
-import com.example.firmly.contractors.navigation.contractorsScreen
 import com.example.firmly.core.presentation.components.FirmlyBackground
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.navigation.FirmlyNavHost
 import com.example.firmly.core.presentation.navigation.FirmlyNavigationSuiteScaffold
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
-import com.example.firmly.home.navigation.HOME_ROUTE
-import com.example.firmly.home.navigation.homeScreen
-import com.example.firmly.search.navigation.searchScreen
-import com.example.firmly.settings.navigation.settingsScreen
 
 @Composable
 fun FirmlyApp(
@@ -113,6 +112,10 @@ internal fun FirmlyApp(
                         ),
                     ),
             ) {
+                var appBarState by remember {
+                    mutableStateOf(AppBarState())
+                }
+
                 val destination = appState.currentTopLevelDestination
                 val shouldShowTopAppBar = destination != null
                 if (destination != null) {
@@ -127,6 +130,7 @@ internal fun FirmlyApp(
                         ),
                         onActionClick = { },
                         onNavigationClick = { },
+                        appBarState = appBarState
                     )
                 }
 
@@ -142,6 +146,7 @@ internal fun FirmlyApp(
                 ) {
                     FirmlyNavHost(
                         appState = appState,
+                        onComposing = { appBarState = it }
                     )
                 }
 
@@ -156,3 +161,8 @@ private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLev
     this?.hierarchy?.any {
         it.route?.contains(destination.name, true) ?: false
     } ?: false
+
+data class AppBarState(
+    val title: String = "",
+    val actions: (@Composable RowScope.() -> Unit)? = null
+)
