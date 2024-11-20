@@ -1,8 +1,10 @@
 package com.example.firmly.core.presentation.components
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,12 +28,10 @@ fun FirmlyTopAppBar(
     @StringRes titleRes: Int,
     navigationIcon: ImageVector,
     navigationIconContentDescription: String,
-    actionIcon: ImageVector,
-    actionIconContentDescription: String,
+    onNavigationClick: () -> Unit = {},
     modifier: Modifier = Modifier,
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
-    onNavigationClick: () -> Unit = {},
-    onActionClick: () -> Unit = {},
+    actions: @Composable (RowScope.() -> Unit) = {},
 ) {
     CenterAlignedTopAppBar(
         title = { Text(text = stringResource(id = titleRes)) },
@@ -45,15 +45,7 @@ fun FirmlyTopAppBar(
                 )
             }
         },
-        actions = {
-            IconButton(onClick = onActionClick) {
-                Icon(
-                    imageVector = actionIcon,
-                    contentDescription = actionIconContentDescription,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
-            }
-        },
+        actions = actions,
         colors = colors,
         modifier = modifier.testTag("niaTopAppBar"),
     )
@@ -68,8 +60,15 @@ private fun FirmlyTopAppBarPreview() {
             titleRes = android.R.string.untitled,
             navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
             navigationIconContentDescription = "Navigation icon",
-            actionIcon = Icons.Default.Search,
-            actionIconContentDescription = "Action icon",
+            actions = {
+                IconButton(onClick = {}) {
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = "Action icon",
+                        tint = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
+            }
         )
     }
 }
