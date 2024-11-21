@@ -1,5 +1,6 @@
 package com.example.firmly
 
+import android.app.Application
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -25,10 +26,27 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.example.firmly.contractors.data.di.contractorModule
 import com.example.firmly.core.presentation.components.FirmlyBackground
 import com.example.firmly.core.presentation.navigation.FirmlyNavHost
 import com.example.firmly.core.presentation.navigation.FirmlyNavigationSuiteScaffold
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+
+class FirmlyCore: Application() {
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidLogger()
+            androidContext(this@FirmlyCore)
+            modules(
+                contractorModule,
+            )
+        }
+    }
+}
 
 @Composable
 fun FirmlyApp(
