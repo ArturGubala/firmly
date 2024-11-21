@@ -25,7 +25,7 @@ android {
         debug {
             val apiKey = gradleLocalProperties(rootDir, providers).getProperty("API_KEY")
             buildConfigField("String", "API_KEY", "\"$apiKey\"")
-            buildConfigField("String", "BASE_URL", "\"https://dane.biznes.gov.pl/api/ceidg/v2\"")
+            buildConfigField("String", "BASE_URL", "\"https://dane.biznes.gov.pl/api/ceidg/v2/\"")
         }
         release {
             val apiKey = gradleLocalProperties(rootDir, providers).getProperty("API_KEY")
@@ -35,7 +35,7 @@ android {
                 "proguard-rules.pro"
             )
             buildConfigField("String", "API_KEY", "\"$apiKey\"")
-            buildConfigField("String", "BASE_URL", "\"https://dane.biznes.gov.pl/api/ceidg/v2\"")
+            buildConfigField("String", "BASE_URL", "\"https://dane.biznes.gov.pl/api/ceidg/v2/\"")
         }
     }
     compileOptions {

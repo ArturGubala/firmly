@@ -27,10 +27,12 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.firmly.contractors.data.di.contractorModule
+import com.example.firmly.core.di.appModule
 import com.example.firmly.core.presentation.components.FirmlyBackground
 import com.example.firmly.core.presentation.navigation.FirmlyNavHost
 import com.example.firmly.core.presentation.navigation.FirmlyNavigationSuiteScaffold
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
+import com.example.firmly.search.di.searchViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -42,7 +44,9 @@ class FirmlyCore: Application() {
             androidLogger()
             androidContext(this@FirmlyCore)
             modules(
+                appModule,
                 contractorModule,
+                searchViewModelModule
             )
         }
     }
