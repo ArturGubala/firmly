@@ -9,17 +9,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.example.firmly.contractors.navigation.CONTRACTORS_ROUTE
-import com.example.firmly.core.presentation.navigation.TopLevelDestination
-import com.example.firmly.core.presentation.navigation.TopLevelDestination.HOME
-import com.example.firmly.core.presentation.navigation.TopLevelDestination.CONTRACTORS
-import com.example.firmly.core.presentation.navigation.TopLevelDestination.SEARCH
-import com.example.firmly.core.presentation.navigation.TopLevelDestination.SETTINGS
-import com.example.firmly.home.navigation.HOME_ROUTE
-import com.example.firmly.search.navigation.SEARCH_ROUTE
-import com.example.firmly.settings.navigation.SETTINGS_ROUTE
 import androidx.tracing.trace
 import com.example.firmly.contractors.navigation.navigateToContractors
+import com.example.firmly.core.presentation.navigation.TopLevelDestination
+import com.example.firmly.core.presentation.navigation.TopLevelDestination.CONTRACTORS
+import com.example.firmly.core.presentation.navigation.TopLevelDestination.HOME
+import com.example.firmly.core.presentation.navigation.TopLevelDestination.SEARCH
+import com.example.firmly.core.presentation.navigation.TopLevelDestination.SETTINGS
 import com.example.firmly.home.navigation.navigateToHome
 import com.example.firmly.search.navigation.navigateToSearch
 import com.example.firmly.settings.navigation.navigateToSettings
@@ -40,15 +36,6 @@ class FirmlyAppState(
     val currentDestination: NavDestination?
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
-
-    val currentTopLevelDestination: TopLevelDestination?
-        @Composable get() = when (currentDestination?.route) {
-            HOME_ROUTE -> HOME
-            CONTRACTORS_ROUTE -> CONTRACTORS
-            SEARCH_ROUTE -> SEARCH
-            SETTINGS_ROUTE -> SETTINGS
-            else -> null
-        }
 
     val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
 
