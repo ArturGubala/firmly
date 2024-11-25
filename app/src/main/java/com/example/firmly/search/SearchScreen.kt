@@ -1,4 +1,4 @@
-package com.example.firmly.search.presentation.search_list
+package com.example.firmly.search
 
 import android.annotation.SuppressLint
 import android.widget.Toast

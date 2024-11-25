@@ -1,4 +1,4 @@
-package com.example.firmly.search.presentation.search_list
+package com.example.firmly.search
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

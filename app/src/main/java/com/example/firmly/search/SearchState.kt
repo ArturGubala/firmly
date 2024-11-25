@@ -1,4 +1,4 @@
-package com.example.firmly.search.presentation.search_list
+package com.example.firmly.search
 
 import com.example.firmly.core.domain.contractor.ContractorListItem
 import com.example.firmly.core.domain.contractor.ContractorQueryParameters
