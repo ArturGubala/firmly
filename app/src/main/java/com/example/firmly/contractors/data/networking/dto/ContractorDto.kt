@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalSerializationApi::class)
+
 package com.example.firmly.contractors.data.networking.dto
 
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -5,17 +7,17 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonNames
 
 @Serializable
-data class SingleContractorResponse @OptIn(ExperimentalSerializationApi::class) constructor(
+data class SingleContractorResponse(
     @JsonNames("firma") val contractor: List<ContractorDto>
 )
 
 @Serializable
-data class MultipleContractorsResponse @OptIn(ExperimentalSerializationApi::class) constructor(
+data class MultipleContractorsResponse(
     @JsonNames("firmy") val contractors: List<ContractorDto>
 )
 
 @Serializable
-data class ContractorDto @OptIn(ExperimentalSerializationApi::class) constructor(
+data class ContractorDto(
     val id: String,
     @JsonNames("nazwa") val name: String,
     @JsonNames("adresDzialalnosci") val companyAddress: CompanyDetailAddress?,
@@ -26,7 +28,7 @@ data class ContractorDto @OptIn(ExperimentalSerializationApi::class) constructor
 )
 
 @Serializable
-data class CompanyDetailAddress @OptIn(ExperimentalSerializationApi::class) constructor(
+data class CompanyDetailAddress(
     @JsonNames("ulica") val street: String?,
     @JsonNames("budynek") val building: String?,
     @JsonNames("lokal") val apartment: String?,
@@ -39,7 +41,7 @@ data class CompanyDetailAddress @OptIn(ExperimentalSerializationApi::class) cons
 )
 
 @Serializable
-data class OwnerDetail @OptIn(ExperimentalSerializationApi::class) constructor(
+data class OwnerDetail(
     @JsonNames("imie") val firstName: String?,
     @JsonNames("nazwisko") val lastName: String?,
     @JsonNames("nip") val taxNumber: String,
