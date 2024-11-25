@@ -1,15 +1,12 @@
-package com.example.firmly.search
+package com.example.firmly.search.presentation
 
 import android.annotation.SuppressLint
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -17,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
@@ -41,13 +39,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
+import com.example.firmly.search.presentation.components.TextWithTitle
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -87,7 +83,6 @@ private fun SearchScreen(
 
     var openBottomSheet by rememberSaveable { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState()
-    val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
     var showText by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -129,7 +124,7 @@ private fun SearchScreen(
                                 modifier = Modifier
                                     .padding(horizontal = 7.dp, vertical = 5.dp)
                             ) {
-                                TextWithDescription(
+                                TextWithTitle(
                                     fieldName = "Nazwa",
                                     fieldText = contractor.name,
                                     bottomSpace = 10.dp
@@ -138,12 +133,12 @@ private fun SearchScreen(
                                     Modifier
                                         .fillMaxWidth()
                                 ) {
-                                    TextWithDescription(
+                                    TextWithTitle(
                                         fieldName = "Kod pocztowy",
                                         fieldText = contractor.postalCode ?: "",
                                         occupyWidth = .4f
                                     )
-                                    TextWithDescription(
+                                    TextWithTitle(
                                         fieldName = "Miasto",
                                         fieldText = contractor.city ?: ""
                                     )
@@ -152,13 +147,13 @@ private fun SearchScreen(
                                     Modifier
                                         .fillMaxWidth()
                                 ) {
-                                    TextWithDescription(
+                                    TextWithTitle(
                                         fieldName = "NIP",
                                         fieldText = contractor.taxNumber,
                                         bottomSpace = 0.dp,
                                         occupyWidth = .4f
                                     )
-                                    TextWithDescription(
+                                    TextWithTitle(
                                         fieldName = "Regon",
                                         fieldText = contractor.buisnessRegistryNumber,
                                         bottomSpace = 0.dp,
@@ -169,70 +164,15 @@ private fun SearchScreen(
                     }
                 }
 
-//                if (state.contractors.any()) {
-//                    for (contractor: ContractorListItem in state.contractors) {
-//                        Card(
-//                            modifier = Modifier
-//                                .fillMaxWidth(.96f)
-//                                .padding(top = 10.dp)
-//                        ) {
-//                            Column(
-//                                modifier = Modifier
-//                                    .padding(horizontal = 7.dp, vertical = 5.dp)
-//                            ) {
-//                                TextWithDescription(
-//                                    fieldName = "Nazwa",
-//                                    fieldText = contractor.name,
-//                                    bottomSpace = 10.dp
-//                                )
-//                                Row(
-//                                    Modifier
-//                                        .fillMaxWidth()
-//                                ) {
-//                                    TextWithDescription(
-//                                        fieldName = "Kod pocztowy",
-//                                        fieldText = contractor.postalCode ?: "",
-//                                        occupyWidth = .4f
-//                                    )
-//                                    TextWithDescription(
-//                                        fieldName = "Miasto",
-//                                        fieldText = contractor.city ?: ""
-//                                    )
-//                                }
-//                                Row(
-//                                    Modifier
-//                                        .fillMaxWidth()
-//                                ) {
-//                                    TextWithDescription(
-//                                        fieldName = "NIP",
-//                                        fieldText = contractor.taxNumber,
-//                                        bottomSpace = 0.dp,
-//                                        occupyWidth = .4f
-//                                    )
-//                                    TextWithDescription(
-//                                        fieldName = "Regon",
-//                                        fieldText = contractor.buisnessRegistryNumber,
-//                                        bottomSpace = 0.dp,
-//                                    )
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-
                 if (openBottomSheet) {
 
                     ModalBottomSheet(
                         onDismissRequest = { openBottomSheet = false },
                         sheetState = bottomSheetState,
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .padding(start = 10.dp, end = 10.dp, bottom = bottomPadding + 10.dp)
-                        ) {
+                        Column(modifier = Modifier.padding(horizontal = 10.dp)) {
                             Row(
                                 Modifier
-                                    .padding(bottom = 5.dp)
                                     .fillMaxWidth(),
                             ) {
                                 OutlinedTextField(
@@ -251,21 +191,20 @@ private fun SearchScreen(
                                             showText = true
                                         }
                                     ),
-//                                    trailingIcon = {
-//                                        if (state.queryParameters.taxNumber.isNotBlank()) {
-//                                            Icon(Icons.Default.Clear,
-//                                                contentDescription = "clear text",
-//                                                modifier = Modifier
-//                                                    .clickable {
-//                                                        onAction(
-//                                                            SearchAction.OnClearFieldIconClick(
-//                                                                SearchViewModel.Field.TAX_NUMBER
-//                                                            )
-//                                                        )
-//                                                    }
-//                                            )
-//                                        }
-//                                    }
+                                    trailingIcon = {
+                                        if (state.queryParameters.taxNumber.isNotBlank()) {
+                                            Icon(Icons.Default.Clear,
+                                                contentDescription = "clear text",
+                                                modifier = Modifier.clickable {
+                                                    onAction(
+                                                        SearchAction.OnClearFieldIconClick(
+                                                            SearchViewModel.Field.TAX_NUMBER
+                                                        )
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    }
                                 )
 
                                 OutlinedTextField(
@@ -279,73 +218,63 @@ private fun SearchScreen(
                                     },
                                     label = { Text("REGON") },
                                     modifier = Modifier
-//                                            .padding(0.dp),
-//                                            .fillMaxHeight()
                                         .fillMaxWidth()
                                         .padding(start = 5.dp),
                                     keyboardOptions = KeyboardOptions(
-//                                        keyboardType = KeyboardType.Number,
+                                        keyboardType = KeyboardType.Number,
                                         imeAction = ImeAction.Next
                                     ),
-//                                    trailingIcon = {
-//                                        if (state.queryParameters.businessRegistryNumber.isNotBlank()) {
-//                                            Icon(Icons.Default.Clear,
-//                                                contentDescription = "clear text",
-//                                                modifier = Modifier
-//                                                    .clickable {
-//                                                        onAction(
-//                                                            SearchAction.OnClearFieldIconClick(
-//                                                                SearchViewModel.Field.BUSINESS_REGISTRY_NUMBER
-//                                                            )
-//                                                        )
-//                                                    }
-//                                            )
-//                                        }
-//                                    }
-                                )
-                            }
-//
-                            Row(
-                                Modifier
-//                                    .border(1.dp, Color.Red)
-                                    .padding(bottom = 5.dp)
-                                    .fillMaxWidth(),
-                            ) {
-                                OutlinedTextField(
-                                    value = state.queryParameters.name,
-                                    onValueChange = { onAction(SearchAction.OnNameFieldEnter(it)) },
-                                    label = { Text("NAZWA") },
-                                    modifier = Modifier
-//                                            .padding(0.dp),
-//                                            .fillMaxHeight()
-                                        .fillMaxWidth(),
-                                    keyboardOptions = KeyboardOptions(
-//                                        keyboardType = KeyboardType.Number,
-                                        imeAction = ImeAction.Next
-                                    ),
-//                                    trailingIcon = {
-//                                        if (state.queryParameters.name.isNotBlank()) {
-//                                            Icon(Icons.Default.Clear,
-//                                                contentDescription = "clear text",
-//                                                modifier = Modifier
-//                                                    .clickable {
-//                                                        onAction(
-//                                                            SearchAction.OnClearFieldIconClick(
-//                                                                SearchViewModel.Field.NAME
-//                                                            )
-//                                                        )
-//                                                    }
-//                                            )
-//                                        }
-//                                    }
+                                    trailingIcon = {
+                                        if (state.queryParameters.businessRegistryNumber.isNotBlank()) {
+                                            Icon(Icons.Default.Clear,
+                                                contentDescription = "clear text",
+                                                modifier = Modifier.clickable {
+                                                    onAction(
+                                                        SearchAction.OnClearFieldIconClick(
+                                                            SearchViewModel.Field.BUSINESS_REGISTRY_NUMBER
+                                                        )
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    }
                                 )
                             }
 
                             Row(
                                 Modifier
-//                                    .border(1.dp, Color.Red)
-                                    .padding(bottom = 5.dp)
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    .padding(bottom = 5.dp),
+                            ) {
+                                OutlinedTextField(
+                                    value = state.queryParameters.name,
+                                    onValueChange = { onAction(SearchAction.OnNameFieldEnter(it)) },
+                                    label = { Text("NAZWA") },
+                                    modifier = Modifier.fillMaxWidth(),
+                                    keyboardOptions = KeyboardOptions(
+                                        imeAction = ImeAction.Next
+                                    ),
+                                    trailingIcon = {
+                                        if (state.queryParameters.name.isNotBlank()) {
+                                            Icon(Icons.Default.Clear,
+                                                contentDescription = "clear text",
+                                                modifier = Modifier.clickable {
+                                                    onAction(
+                                                        SearchAction.OnClearFieldIconClick(
+                                                            SearchViewModel.Field.NAME
+                                                        )
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 5.dp),
                             ) {
                                 OutlinedTextField(
                                     value = state.queryParameters.firstName,
@@ -363,59 +292,53 @@ private fun SearchScreen(
                                             showText = true
                                         }
                                     ),
-////                                    trailingIcon = {
-////                                        if (state.queryParameters.firstName.isNotBlank()) {
-////                                            Icon(Icons.Default.Clear,
-////                                                contentDescription = "clear text",
-////                                                modifier = Modifier
-////                                                    .clickable {
-////                                                        onAction(
-////                                                            SearchAction.OnClearFieldIconClick(
-////                                                                SearchViewModel.Field.FIRST_NAME
-////                                                            )
-////                                                        )
-////                                                    }
-////                                            )
-////                                        }
-////                                    }
+                                    trailingIcon = {
+                                        if (state.queryParameters.firstName.isNotBlank()) {
+                                            Icon(Icons.Default.Clear,
+                                                contentDescription = "clear text",
+                                                modifier = Modifier.clickable {
+                                                    onAction(
+                                                        SearchAction.OnClearFieldIconClick(
+                                                            SearchViewModel.Field.FIRST_NAME
+                                                        )
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    }
                                 )
-////
+
                                 OutlinedTextField(
                                     value = state.queryParameters.lastName,
                                     onValueChange = { onAction(SearchAction.OnLastNameFieldEnter(it)) },
                                     label = { Text("NAZWISKO") },
                                     modifier = Modifier
-//                                            .padding(0.dp),
-//                                            .fillMaxHeight()
                                         .fillMaxWidth()
                                         .padding(start = 5.dp),
                                     keyboardOptions = KeyboardOptions(
-//                                        keyboardType = KeyboardType.Number,
                                         imeAction = ImeAction.Next
                                     ),
-////                                    trailingIcon = {
-////                                        if (state.queryParameters.lastName.isNotBlank()) {
-////                                            Icon(Icons.Default.Clear,
-////                                                contentDescription = "clear text",
-////                                                modifier = Modifier
-////                                                    .clickable {
-////                                                        onAction(
-////                                                            SearchAction.OnClearFieldIconClick(
-////                                                                SearchViewModel.Field.LAST_NAME
-////                                                            )
-////                                                        )
-////                                                    }
-////                                            )
-////                                        }
-////                                    }
+                                    trailingIcon = {
+                                        if (state.queryParameters.lastName.isNotBlank()) {
+                                            Icon(Icons.Default.Clear,
+                                                contentDescription = "clear text",
+                                                modifier = Modifier.clickable {
+                                                    onAction(
+                                                        SearchAction.OnClearFieldIconClick(
+                                                            SearchViewModel.Field.LAST_NAME
+                                                        )
+                                                    )
+                                                }
+                                            )
+                                        }
+                                    }
                                 )
                             }
-//
+
                             Row(
                                 Modifier
-//                                    .border(1.dp, Color.Red)
-//                                    .padding(bottom = 5.dp)
-                                    .fillMaxWidth(),
+                                    .fillMaxWidth()
+                                    .padding(bottom = 5.dp),
                             ) {
                                 FilledIconButton(
                                     onClick = {
@@ -434,41 +357,12 @@ private fun SearchScreen(
                                         )
                                         Text(text = "WYSZUKAJ")
                                     }
-
                                 }
                             }
                         }
                     }
                 }
-
             }
         }
     )
-}
-
-@Composable
-@Preview
-private fun TextWithDescription(
-    fieldName: String = "Nazwa",
-    fieldText: String = "Nazwa Firmy",
-    bottomSpace: Dp = 2.dp,
-    occupyWidth: Float = 1f
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth(occupyWidth)
-            .padding(bottom = bottomSpace),
-        verticalArrangement = Arrangement.Top
-    ) {
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = fieldName,
-            fontSize = 11.sp,
-        )
-        Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = fieldText.ifEmpty { "-" },
-            fontSize = 18.sp,
-        )
-    }
 }
