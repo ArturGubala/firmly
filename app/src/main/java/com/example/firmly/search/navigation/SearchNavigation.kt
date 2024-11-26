@@ -4,7 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import com.example.firmly.search.presentation.SearchRoute
+import com.example.firmly.search.presentation.search_list.SearchRoute
 
 const val SEARCH_ROUTE = "search_route"
 

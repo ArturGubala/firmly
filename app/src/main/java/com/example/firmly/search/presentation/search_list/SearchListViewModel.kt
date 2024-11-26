@@ -1,4 +1,4 @@
-package com.example.firmly.search.presentation
+package com.example.firmly.search.presentation.search_list
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,10 +9,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.firmly.core.domain.contractor.ContractorQueryParameters
 import com.example.firmly.core.domain.contractor.RemoteContractorDataSource
 import com.example.firmly.core.domain.contractor.toMap
+import com.example.firmly.core.domain.util.Result
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import com.example.firmly.core.domain.util.Result
 
 class SearchViewModel(
     private val remoteContractorDataSource: RemoteContractorDataSource

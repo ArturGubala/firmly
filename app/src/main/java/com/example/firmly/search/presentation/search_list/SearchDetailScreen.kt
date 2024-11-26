@@ -1,4 +1,4 @@
-package com.example.firmly.search.presentation
+package com.example.firmly.search.presentation.search_list
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -32,7 +32,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +42,7 @@ import androidx.compose.ui.unit.dp
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
-import com.example.firmly.search.presentation.components.TextWithTitle
+import com.example.firmly.search.presentation.search_list.components.TextWithTitle
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -54,7 +53,7 @@ internal fun SearchRoute(
 
     val context = LocalContext.current
     ObserveAsEvents(viewModel.events) { event ->
-        when(event) {
+        when (event) {
             is SearchEvent.Error -> {
                 Toast.makeText(
                     context,
@@ -81,7 +80,7 @@ private fun SearchScreen(
     onAction: (SearchAction) -> Unit
 ) {
 
-    var openBottomSheet by rememberSaveable { mutableStateOf(false) }
+    var openBottomSheet by remember { mutableStateOf(false) }
     val bottomSheetState = rememberModalBottomSheetState()
     var showText by remember { mutableStateOf(false) }
 
@@ -93,7 +92,7 @@ private fun SearchScreen(
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = onBackClick,
                 actions = {
-                    IconButton(onClick = { openBottomSheet = !openBottomSheet })  {
+                    IconButton(onClick = { openBottomSheet = !openBottomSheet }) {
                         Icon(
                             imageVector = Icons.Default.FilterAlt,
                             contentDescription = "Filter icon",
@@ -106,22 +105,22 @@ private fun SearchScreen(
         content = { padding ->
 
             Column(
-                modifier = Modifier
+                modifier = Modifier.Companion
                     .padding(padding)
                     .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.Companion.CenterHorizontally
             ) {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.Companion.fillMaxSize(),
                 ) {
                     items(state.contractors) { contractor ->
                         Card(
-                            modifier = Modifier
+                            modifier = Modifier.Companion
                                 .fillMaxWidth(.96f)
                                 .padding(top = 10.dp)
                         ) {
                             Column(
-                                modifier = Modifier
+                                modifier = Modifier.Companion
                                     .padding(horizontal = 7.dp, vertical = 5.dp)
                             ) {
                                 TextWithTitle(
@@ -130,7 +129,7 @@ private fun SearchScreen(
                                     bottomSpace = 10.dp
                                 )
                                 Row(
-                                    Modifier
+                                    Modifier.Companion
                                         .fillMaxWidth()
                                 ) {
                                     TextWithTitle(
@@ -144,7 +143,7 @@ private fun SearchScreen(
                                     )
                                 }
                                 Row(
-                                    Modifier
+                                    Modifier.Companion
                                         .fillMaxWidth()
                                 ) {
                                     TextWithTitle(
@@ -170,21 +169,21 @@ private fun SearchScreen(
                         onDismissRequest = { openBottomSheet = false },
                         sheetState = bottomSheetState,
                     ) {
-                        Column(modifier = Modifier.padding(horizontal = 10.dp)) {
+                        Column(modifier = Modifier.Companion.padding(horizontal = 10.dp)) {
                             Row(
-                                Modifier
+                                Modifier.Companion
                                     .fillMaxWidth(),
                             ) {
                                 OutlinedTextField(
                                     value = state.queryParameters.taxNumber,
                                     onValueChange = { onAction(SearchAction.OnTaxNumberFieldEnter(it)) },
-                                    Modifier
+                                    Modifier.Companion
                                         .fillMaxWidth(.5f)
                                         .padding(end = 5.dp),
                                     label = { Text("NIP") },
                                     keyboardOptions = KeyboardOptions(
-                                        keyboardType = KeyboardType.Number,
-                                        imeAction = ImeAction.Next
+                                        keyboardType = KeyboardType.Companion.Number,
+                                        imeAction = ImeAction.Companion.Next
                                     ),
                                     keyboardActions = KeyboardActions(
                                         onSearch = {
@@ -195,7 +194,7 @@ private fun SearchScreen(
                                         if (state.queryParameters.taxNumber.isNotBlank()) {
                                             Icon(Icons.Default.Clear,
                                                 contentDescription = "clear text",
-                                                modifier = Modifier.clickable {
+                                                modifier = Modifier.Companion.clickable {
                                                     onAction(
                                                         SearchAction.OnClearFieldIconClick(
                                                             SearchViewModel.Field.TAX_NUMBER
@@ -217,18 +216,18 @@ private fun SearchScreen(
                                         )
                                     },
                                     label = { Text("REGON") },
-                                    modifier = Modifier
+                                    modifier = Modifier.Companion
                                         .fillMaxWidth()
                                         .padding(start = 5.dp),
                                     keyboardOptions = KeyboardOptions(
-                                        keyboardType = KeyboardType.Number,
-                                        imeAction = ImeAction.Next
+                                        keyboardType = KeyboardType.Companion.Number,
+                                        imeAction = ImeAction.Companion.Next
                                     ),
                                     trailingIcon = {
                                         if (state.queryParameters.businessRegistryNumber.isNotBlank()) {
                                             Icon(Icons.Default.Clear,
                                                 contentDescription = "clear text",
-                                                modifier = Modifier.clickable {
+                                                modifier = Modifier.Companion.clickable {
                                                     onAction(
                                                         SearchAction.OnClearFieldIconClick(
                                                             SearchViewModel.Field.BUSINESS_REGISTRY_NUMBER
@@ -242,7 +241,7 @@ private fun SearchScreen(
                             }
 
                             Row(
-                                Modifier
+                                Modifier.Companion
                                     .fillMaxWidth()
                                     .padding(bottom = 5.dp),
                             ) {
@@ -250,15 +249,15 @@ private fun SearchScreen(
                                     value = state.queryParameters.name,
                                     onValueChange = { onAction(SearchAction.OnNameFieldEnter(it)) },
                                     label = { Text("NAZWA") },
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier.Companion.fillMaxWidth(),
                                     keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Next
+                                        imeAction = ImeAction.Companion.Next
                                     ),
                                     trailingIcon = {
                                         if (state.queryParameters.name.isNotBlank()) {
                                             Icon(Icons.Default.Clear,
                                                 contentDescription = "clear text",
-                                                modifier = Modifier.clickable {
+                                                modifier = Modifier.Companion.clickable {
                                                     onAction(
                                                         SearchAction.OnClearFieldIconClick(
                                                             SearchViewModel.Field.NAME
@@ -272,20 +271,20 @@ private fun SearchScreen(
                             }
 
                             Row(
-                                Modifier
+                                Modifier.Companion
                                     .fillMaxWidth()
                                     .padding(bottom = 5.dp),
                             ) {
                                 OutlinedTextField(
                                     value = state.queryParameters.firstName,
                                     onValueChange = { onAction(SearchAction.OnFirstNameFieldEnter(it)) },
-                                    Modifier
+                                    Modifier.Companion
                                         .fillMaxWidth(.5f)
                                         .padding(end = 5.dp),
                                     label = { Text("IMIE") },
                                     keyboardOptions = KeyboardOptions(
-                                        keyboardType = KeyboardType.Text,
-                                        imeAction = ImeAction.Next
+                                        keyboardType = KeyboardType.Companion.Text,
+                                        imeAction = ImeAction.Companion.Next
                                     ),
                                     keyboardActions = KeyboardActions(
                                         onSearch = {
@@ -296,7 +295,7 @@ private fun SearchScreen(
                                         if (state.queryParameters.firstName.isNotBlank()) {
                                             Icon(Icons.Default.Clear,
                                                 contentDescription = "clear text",
-                                                modifier = Modifier.clickable {
+                                                modifier = Modifier.Companion.clickable {
                                                     onAction(
                                                         SearchAction.OnClearFieldIconClick(
                                                             SearchViewModel.Field.FIRST_NAME
@@ -312,17 +311,17 @@ private fun SearchScreen(
                                     value = state.queryParameters.lastName,
                                     onValueChange = { onAction(SearchAction.OnLastNameFieldEnter(it)) },
                                     label = { Text("NAZWISKO") },
-                                    modifier = Modifier
+                                    modifier = Modifier.Companion
                                         .fillMaxWidth()
                                         .padding(start = 5.dp),
                                     keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Next
+                                        imeAction = ImeAction.Companion.Next
                                     ),
                                     trailingIcon = {
                                         if (state.queryParameters.lastName.isNotBlank()) {
                                             Icon(Icons.Default.Clear,
                                                 contentDescription = "clear text",
-                                                modifier = Modifier.clickable {
+                                                modifier = Modifier.Companion.clickable {
                                                     onAction(
                                                         SearchAction.OnClearFieldIconClick(
                                                             SearchViewModel.Field.LAST_NAME
@@ -336,7 +335,7 @@ private fun SearchScreen(
                             }
 
                             Row(
-                                Modifier
+                                Modifier.Companion
                                     .fillMaxWidth()
                                     .padding(bottom = 5.dp),
                             ) {
@@ -345,11 +344,11 @@ private fun SearchScreen(
                                         openBottomSheet = false
                                         onAction(SearchAction.OnSearchContractorClick)
                                     },
-                                    Modifier
+                                    Modifier.Companion
                                         .fillMaxWidth()
                                 ) {
                                     Row(
-                                        verticalAlignment = Alignment.CenterVertically
+                                        verticalAlignment = Alignment.Companion.CenterVertically
                                     ) {
                                         Icon(
                                             Icons.Default.Search,

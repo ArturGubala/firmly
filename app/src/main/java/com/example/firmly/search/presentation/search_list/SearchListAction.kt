@@ -1,4 +1,4 @@
-package com.example.firmly.search.presentation
+package com.example.firmly.search.presentation.search_list
 
 sealed interface SearchAction {
     data object OnSearchContractorClick: SearchAction

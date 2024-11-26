@@ -1,4 +1,4 @@
-package com.example.firmly.search.presentation.components
+package com.example.firmly.search.presentation.search_list.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
