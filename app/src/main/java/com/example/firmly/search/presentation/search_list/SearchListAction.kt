@@ -1,12 +1,12 @@
 package com.example.firmly.search.presentation.search_list
 
-sealed interface SearchAction {
-    data object OnSearchContractorClick: SearchAction
-    data class OnNameFieldEnter(val name: String) : SearchAction
-    data class OnCityFieldEnter(val city: String) : SearchAction
-    data class OnFirstNameFieldEnter(val firstName: String) : SearchAction
-    data class OnLastNameFieldEnter(val lastName: String) : SearchAction
-    data class OnTaxNumberFieldEnter(val taxNumber: String) : SearchAction
-    data class OnBusinessRegistryNumberFieldEnter(val businessRegistryNumber: String) : SearchAction
-    data class OnClearFieldIconClick(val field: SearchViewModel.Field) : SearchAction
+sealed interface SearchListAction {
+    data object OnSearchContractorClick: SearchListAction
+    data class OnNameFieldEnter(val name: String) : SearchListAction
+    data class OnCityFieldEnter(val city: String) : SearchListAction
+    data class OnFirstNameFieldEnter(val firstName: String) : SearchListAction
+    data class OnLastNameFieldEnter(val lastName: String) : SearchListAction
+    data class OnTaxNumberFieldEnter(val taxNumber: String) : SearchListAction
+    data class OnBusinessRegistryNumberFieldEnter(val businessRegistryNumber: String) : SearchListAction
+    data class OnClearFieldIconClick(val field: SearchListViewModel.Field) : SearchListAction
 }

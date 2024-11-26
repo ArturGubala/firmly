@@ -14,22 +14,22 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-class SearchViewModel(
+class SearchListViewModel(
     private val remoteContractorDataSource: RemoteContractorDataSource
 ): ViewModel() {
 
-    var state by mutableStateOf(SearchState())
+    var state by mutableStateOf(SearchListState())
         private set
 
-    private val eventChannel = Channel<SearchEvent>()
+    private val eventChannel = Channel<SearchListEvent>()
     val events = eventChannel.receiveAsFlow()
 
-    fun onAction(action: SearchAction) {
+    fun onAction(action: SearchListAction) {
         when(action) {
-            is SearchAction.OnSearchContractorClick -> {
+            is SearchListAction.OnSearchContractorClick -> {
                 search()
             }
-            is SearchAction.OnNameFieldEnter -> {
+            is SearchListAction.OnNameFieldEnter -> {
                 if (action.name.matches(Regex("^[\\w\\s\\W\\SąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$"))) {
 
                     state = state.copy(queryParameters = ContractorQueryParameters(
@@ -44,7 +44,7 @@ class SearchViewModel(
                     )
                 }
             }
-            is SearchAction.OnCityFieldEnter -> {
+            is SearchListAction.OnCityFieldEnter -> {
                 if (action.city.matches(Regex("^[\\w\\s\\W\\SąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$"))) {
                     state = state.copy(queryParameters = ContractorQueryParameters(
                         name = state.queryParameters.name,
@@ -58,7 +58,7 @@ class SearchViewModel(
                     )
                 }
             }
-            is SearchAction.OnFirstNameFieldEnter -> {
+            is SearchListAction.OnFirstNameFieldEnter -> {
                 val firstNameWithOutWhiteChars = action.firstName.trim()
                 if (firstNameWithOutWhiteChars.matches(Regex("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$"))) {
                     state = state.copy(queryParameters = ContractorQueryParameters(
@@ -73,7 +73,7 @@ class SearchViewModel(
                     )
                 }
             }
-            is SearchAction.OnLastNameFieldEnter -> {
+            is SearchListAction.OnLastNameFieldEnter -> {
                 if (action.lastName.replace(" ", "").matches(Regex("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]*$"))) {
                     state = state.copy(queryParameters = ContractorQueryParameters(
                         name = state.queryParameters.name,
@@ -87,7 +87,7 @@ class SearchViewModel(
                     )
                 }
             }
-            is SearchAction.OnTaxNumberFieldEnter -> {
+            is SearchListAction.OnTaxNumberFieldEnter -> {
                 if (action.taxNumber.length <= 11 && action.taxNumber.isDigitsOnly()) {
                     state = state.copy(queryParameters = ContractorQueryParameters(
                         name = state.queryParameters.name,
@@ -101,7 +101,7 @@ class SearchViewModel(
                     )
                 }
             }
-            is SearchAction.OnBusinessRegistryNumberFieldEnter -> {
+            is SearchListAction.OnBusinessRegistryNumberFieldEnter -> {
                 if (action.businessRegistryNumber.length <= 9 && action.businessRegistryNumber.isDigitsOnly()) {
                     state = state.copy(queryParameters = ContractorQueryParameters(
                         name = state.queryParameters.name,
@@ -116,7 +116,7 @@ class SearchViewModel(
                 }
             }
 
-            is SearchAction.OnClearFieldIconClick -> clearField(action.field)
+            is SearchListAction.OnClearFieldIconClick -> clearField(action.field)
         }
     }
 
@@ -129,7 +129,7 @@ class SearchViewModel(
                     state = state.copy(
                         contractors = emptyList()
                     )
-                    eventChannel.send(SearchEvent.Error(result.error.toString()))
+                    eventChannel.send(SearchListEvent.Error(result.error.toString()))
                 }
                 is Result.Success -> {
                     state = state.copy(

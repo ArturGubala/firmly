@@ -29,10 +29,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -44,17 +42,19 @@ import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
 import com.example.firmly.search.presentation.search_list.components.TextWithTitle
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 
 @Composable
 internal fun SearchRoute(
     onBackClick: () -> Unit,
-    viewModel: SearchViewModel = koinViewModel()
+    viewModel: SearchListViewModel = koinViewModel()
 ) {
 
     val context = LocalContext.current
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            is SearchEvent.Error -> {
+            is SearchListEvent.Error -> {
                 Toast.makeText(
                     context,
                     event.error,
@@ -64,7 +64,7 @@ internal fun SearchRoute(
         }
     }
 
-    SearchScreen(
+    SearchListScreen(
         onBackClick = onBackClick,
         state = viewModel.state,
         onAction = viewModel::onAction
@@ -74,10 +74,10 @@ internal fun SearchRoute(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SearchScreen(
+private fun SearchListScreen(
     onBackClick: () -> Unit,
-    state: SearchState,
-    onAction: (SearchAction) -> Unit
+    state: SearchListState,
+    onAction: (SearchListAction) -> Unit
 ) {
 
     var openBottomSheet by remember { mutableStateOf(false) }
@@ -176,7 +176,7 @@ private fun SearchScreen(
                             ) {
                                 OutlinedTextField(
                                     value = state.queryParameters.taxNumber,
-                                    onValueChange = { onAction(SearchAction.OnTaxNumberFieldEnter(it)) },
+                                    onValueChange = { onAction(SearchListAction.OnTaxNumberFieldEnter(it)) },
                                     Modifier.Companion
                                         .fillMaxWidth(.5f)
                                         .padding(end = 5.dp),
@@ -196,8 +196,8 @@ private fun SearchScreen(
                                                 contentDescription = "clear text",
                                                 modifier = Modifier.Companion.clickable {
                                                     onAction(
-                                                        SearchAction.OnClearFieldIconClick(
-                                                            SearchViewModel.Field.TAX_NUMBER
+                                                        SearchListAction.OnClearFieldIconClick(
+                                                            SearchListViewModel.Field.TAX_NUMBER
                                                         )
                                                     )
                                                 }
@@ -210,7 +210,7 @@ private fun SearchScreen(
                                     value = state.queryParameters.businessRegistryNumber,
                                     onValueChange = {
                                         onAction(
-                                            SearchAction.OnBusinessRegistryNumberFieldEnter(
+                                            SearchListAction.OnBusinessRegistryNumberFieldEnter(
                                                 it
                                             )
                                         )
@@ -229,8 +229,8 @@ private fun SearchScreen(
                                                 contentDescription = "clear text",
                                                 modifier = Modifier.Companion.clickable {
                                                     onAction(
-                                                        SearchAction.OnClearFieldIconClick(
-                                                            SearchViewModel.Field.BUSINESS_REGISTRY_NUMBER
+                                                        SearchListAction.OnClearFieldIconClick(
+                                                            SearchListViewModel.Field.BUSINESS_REGISTRY_NUMBER
                                                         )
                                                     )
                                                 }
@@ -247,7 +247,7 @@ private fun SearchScreen(
                             ) {
                                 OutlinedTextField(
                                     value = state.queryParameters.name,
-                                    onValueChange = { onAction(SearchAction.OnNameFieldEnter(it)) },
+                                    onValueChange = { onAction(SearchListAction.OnNameFieldEnter(it)) },
                                     label = { Text("NAZWA") },
                                     modifier = Modifier.Companion.fillMaxWidth(),
                                     keyboardOptions = KeyboardOptions(
@@ -259,8 +259,8 @@ private fun SearchScreen(
                                                 contentDescription = "clear text",
                                                 modifier = Modifier.Companion.clickable {
                                                     onAction(
-                                                        SearchAction.OnClearFieldIconClick(
-                                                            SearchViewModel.Field.NAME
+                                                        SearchListAction.OnClearFieldIconClick(
+                                                            SearchListViewModel.Field.NAME
                                                         )
                                                     )
                                                 }
@@ -277,7 +277,7 @@ private fun SearchScreen(
                             ) {
                                 OutlinedTextField(
                                     value = state.queryParameters.firstName,
-                                    onValueChange = { onAction(SearchAction.OnFirstNameFieldEnter(it)) },
+                                    onValueChange = { onAction(SearchListAction.OnFirstNameFieldEnter(it)) },
                                     Modifier.Companion
                                         .fillMaxWidth(.5f)
                                         .padding(end = 5.dp),
@@ -297,8 +297,8 @@ private fun SearchScreen(
                                                 contentDescription = "clear text",
                                                 modifier = Modifier.Companion.clickable {
                                                     onAction(
-                                                        SearchAction.OnClearFieldIconClick(
-                                                            SearchViewModel.Field.FIRST_NAME
+                                                        SearchListAction.OnClearFieldIconClick(
+                                                            SearchListViewModel.Field.FIRST_NAME
                                                         )
                                                     )
                                                 }
@@ -309,7 +309,7 @@ private fun SearchScreen(
 
                                 OutlinedTextField(
                                     value = state.queryParameters.lastName,
-                                    onValueChange = { onAction(SearchAction.OnLastNameFieldEnter(it)) },
+                                    onValueChange = { onAction(SearchListAction.OnLastNameFieldEnter(it)) },
                                     label = { Text("NAZWISKO") },
                                     modifier = Modifier.Companion
                                         .fillMaxWidth()
@@ -323,8 +323,8 @@ private fun SearchScreen(
                                                 contentDescription = "clear text",
                                                 modifier = Modifier.Companion.clickable {
                                                     onAction(
-                                                        SearchAction.OnClearFieldIconClick(
-                                                            SearchViewModel.Field.LAST_NAME
+                                                        SearchListAction.OnClearFieldIconClick(
+                                                            SearchListViewModel.Field.LAST_NAME
                                                         )
                                                     )
                                                 }
@@ -342,7 +342,7 @@ private fun SearchScreen(
                                 FilledIconButton(
                                     onClick = {
                                         openBottomSheet = false
-                                        onAction(SearchAction.OnSearchContractorClick)
+                                        onAction(SearchListAction.OnSearchContractorClick)
                                     },
                                     Modifier.Companion
                                         .fillMaxWidth()
