@@ -115,6 +115,11 @@ class SearchListViewModel(
                     )
                 }
             }
+            is SearchListAction.OnContractorCardClick -> {
+                viewModelScope.launch {
+                    eventChannel.send(SearchListEvent.NavigateToDetail(action.contractorId))
+                }
+            }
 
             is SearchListAction.OnClearFieldIconClick -> clearField(action.field)
         }

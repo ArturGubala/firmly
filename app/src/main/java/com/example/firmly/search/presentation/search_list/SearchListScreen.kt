@@ -29,24 +29,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
+import com.example.firmly.search.navigation.navigateToSearchDetail
 import com.example.firmly.search.presentation.search_list.components.TextWithTitle
 import org.koin.androidx.compose.koinViewModel
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 
 @Composable
-internal fun SearchRoute(
+internal fun SearchListRoute(
+    navController: NavController,
     onBackClick: () -> Unit,
     viewModel: SearchListViewModel = koinViewModel()
 ) {
@@ -60,6 +63,9 @@ internal fun SearchRoute(
                     event.error,
                     Toast.LENGTH_LONG
                 ).show()
+            }
+            is SearchListEvent.NavigateToDetail -> {
+                navController.navigateToSearchDetail(event.contractorId)
             }
         }
     }
@@ -117,7 +123,8 @@ private fun SearchListScreen(
                         Card(
                             modifier = Modifier.Companion
                                 .fillMaxWidth(.96f)
-                                .padding(top = 10.dp)
+                                .padding(top = 10.dp),
+                            onClick = { onAction(SearchListAction.OnContractorCardClick(contractor.id)) }
                         ) {
                             Column(
                                 modifier = Modifier.Companion

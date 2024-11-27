@@ -7,7 +7,8 @@ import com.example.firmly.FirmlyAppState
 import com.example.firmly.contractors.navigation.contractorsScreen
 import com.example.firmly.home.navigation.HOME_ROUTE
 import com.example.firmly.home.navigation.homeScreen
-import com.example.firmly.search.navigation.searchScreen
+import com.example.firmly.search.navigation.searchDetailScreen
+import com.example.firmly.search.navigation.searchListScreen
 import com.example.firmly.settings.navigation.settingsScreen
 
 @Composable
@@ -24,7 +25,11 @@ fun FirmlyNavHost(
     ) {
         homeScreen(onBackClick = { navController.popBackStack() })
         contractorsScreen(onBackClick = { navController.popBackStack() })
-        searchScreen(onBackClick = { navController.popBackStack() })
+        searchListScreen(
+            navController = navController,
+            onBackClick = { navController.popBackStack() }
+        )
+        searchDetailScreen { navController.popBackStack() }
         settingsScreen(onBackClick = { navController.popBackStack() })
     }
 }

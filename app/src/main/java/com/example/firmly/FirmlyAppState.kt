@@ -17,7 +17,7 @@ import com.example.firmly.core.presentation.navigation.TopLevelDestination.HOME
 import com.example.firmly.core.presentation.navigation.TopLevelDestination.SEARCH
 import com.example.firmly.core.presentation.navigation.TopLevelDestination.SETTINGS
 import com.example.firmly.home.navigation.navigateToHome
-import com.example.firmly.search.navigation.navigateToSearch
+import com.example.firmly.search.navigation.navigateToSearchList
 import com.example.firmly.settings.navigation.navigateToSettings
 
 @Composable
@@ -52,7 +52,7 @@ class FirmlyAppState(
             when (topLevelDestination) {
                 HOME -> navController.navigateToHome(topLevelNavOptions)
                 CONTRACTORS -> navController.navigateToContractors(topLevelNavOptions)
-                SEARCH -> navController.navigateToSearch(topLevelNavOptions)
+                SEARCH -> navController.navigateToSearchList(topLevelNavOptions)
                 SETTINGS -> navController.navigateToSettings(topLevelNavOptions)
             }
         }

@@ -9,4 +9,5 @@ sealed interface SearchListAction {
     data class OnTaxNumberFieldEnter(val taxNumber: String) : SearchListAction
     data class OnBusinessRegistryNumberFieldEnter(val businessRegistryNumber: String) : SearchListAction
     data class OnClearFieldIconClick(val field: SearchListViewModel.Field) : SearchListAction
+    data class OnContractorCardClick(val contractorId: String) : SearchListAction
 }
