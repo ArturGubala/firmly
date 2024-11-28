@@ -44,7 +44,7 @@ import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
 import com.example.firmly.search.navigation.navigateToSearchDetail
-import com.example.firmly.search.presentation.search_list.components.TextWithTitle
+import com.example.firmly.core.presentation.components.TextWithTitle
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
