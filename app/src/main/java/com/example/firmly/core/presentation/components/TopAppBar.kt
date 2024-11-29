@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,7 +24,7 @@ import com.example.firmly.ui.theme.FirmlyTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FirmlyTopAppBar(
-    @StringRes titleRes: Int,
+    @StringRes titleRes: Int?,
     navigationIcon: ImageVector,
     navigationIconContentDescription: String,
     onNavigationClick: () -> Unit = {},
@@ -34,7 +33,7 @@ fun FirmlyTopAppBar(
     actions: @Composable (RowScope.() -> Unit) = {},
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = stringResource(id = titleRes)) },
+        title = { titleRes?.let { Text(text = stringResource(id = it)) } },
 
         navigationIcon = {
             IconButton(onClick = onNavigationClick) {

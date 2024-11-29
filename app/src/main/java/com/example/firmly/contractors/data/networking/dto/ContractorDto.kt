@@ -34,8 +34,8 @@ data class CompanyDetailAddress(
     @JsonNames("lokal") val apartment: String?,
     @JsonNames("miasto") val city: String?,
     @JsonNames("wojewodztwo") val province: String?,
-    @JsonNames("powiat") val district: String?,
-    @JsonNames("gmina") val parish: String?,
+    @JsonNames("powiat") val county: String?,
+    @JsonNames("gmina") val municipality: String?,
     @JsonNames("kraj") val country: String?,
     @JsonNames("kod") val postalCode: String?
 )

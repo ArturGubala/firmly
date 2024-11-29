@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.firmly.ui.theme.FirmlyTheme
@@ -18,7 +19,9 @@ fun TextWithTitle(
     fieldName: String,
     fieldText: String,
     bottomSpace: Dp = 2.dp,
-    occupyWidth: Float = 1f
+    occupyWidth: Float = 1f,
+    descriptionFontSize: TextUnit = 11.sp,
+    textFontSize: TextUnit = 18.sp
 ) {
     Column(
         modifier = Modifier
@@ -29,12 +32,12 @@ fun TextWithTitle(
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = fieldName,
-            fontSize = 11.sp,
+            fontSize = descriptionFontSize,
         )
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = fieldText.ifEmpty { "-" },
-            fontSize = 18.sp,
+            fontSize = textFontSize,
         )
     }
 }
