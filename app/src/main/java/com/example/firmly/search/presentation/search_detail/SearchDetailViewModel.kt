@@ -1,14 +1,16 @@
 package com.example.firmly.search.presentation.search_detail
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firmly.core.domain.contractor.RemoteContractorDataSource
 import com.example.firmly.core.domain.util.Result
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SearchDetailViewModel(
@@ -16,12 +18,14 @@ class SearchDetailViewModel(
     private val remoteContractorDataSource: RemoteContractorDataSource
 ) : ViewModel() {
 
-    init {
-        getContractorDetails(contractorId)
-    }
-
-    var state by mutableStateOf(SearchDetailState())
-        private set
+    private val _state = MutableStateFlow(SearchDetailState())
+    val state = _state
+        .onStart { getContractorDetails(contractorId) }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(5000L),
+            SearchDetailState(),
+        )
 
     private val eventChannel = Channel<SearchDetailEvent>()
     val events = eventChannel.receiveAsFlow()
@@ -30,19 +34,31 @@ class SearchDetailViewModel(
 
     private fun getContractorDetails(contractorId: String) {
         viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+
             val result = remoteContractorDataSource.getContractor(contractorId)
 
             when(result) {
                 is Result.Error -> {
-                    state = state.copy(
-                        contractor = null
-                    )
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            contractor = null
+                        )
+                    }
                     eventChannel.send(SearchDetailEvent.Error(result.error.toString()))
                 }
                 is Result.Success -> {
-                    state = state.copy(
-                        contractor = result.data.first()
-                    )
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            contractor = result.data.first()
+                        )
+                    }
                 }
             }
         }
