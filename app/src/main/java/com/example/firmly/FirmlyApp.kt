@@ -27,6 +27,7 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.firmly.contractors.data.di.contractorModule
+import com.example.firmly.core.database.di.databaseModule
 import com.example.firmly.core.di.appModule
 import com.example.firmly.core.presentation.components.FirmlyBackground
 import com.example.firmly.core.presentation.navigation.FirmlyNavHost
@@ -46,7 +47,8 @@ class FirmlyCore: Application() {
             modules(
                 appModule,
                 contractorModule,
-                searchViewModelModule
+                searchViewModelModule,
+                databaseModule,
             )
         }
     }

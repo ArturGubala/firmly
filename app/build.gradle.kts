@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -36,6 +37,7 @@ android {
             )
             buildConfigField("String", "API_KEY", "\"$apiKey\"")
             buildConfigField("String", "BASE_URL", "\"https://dane.biznes.gov.pl/api/ceidg/v2/\"")
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -76,6 +78,7 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 
     testImplementation(libs.junit)
 

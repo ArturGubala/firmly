@@ -24,7 +24,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.firmly.core.presentation.components.DetailScreenContent
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.util.ObserveAsEvents
-import com.example.firmly.search.presentation.search_list.SearchListEvent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
 
@@ -40,10 +39,17 @@ internal fun SearchDetailRoute(
     val context = LocalContext.current
     ObserveAsEvents(viewModel.events) { event ->
         when (event) {
-            is SearchListEvent.Error -> {
+            is SearchDetailEvent.Error -> {
                 Toast.makeText(
                     context,
                     event.error,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+            is SearchDetailEvent.Success -> {
+                Toast.makeText(
+                    context,
+                    event.message,
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -72,7 +78,7 @@ private fun SearchDetailScreen(
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = onBackClick,
                 actions = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { onAction(SearchDetailAction.OnSaveContractorClick()) }) {
                         Icon(
                             imageVector = Icons.Default.Add,
                             contentDescription = "Add icon",
