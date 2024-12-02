@@ -24,6 +24,6 @@ data class ContractorEntity(
     val startDate: String,
     val state: String,
     val phone: String?,
-    val temporary: Short,
-//    val creationDate: Date
+    val temporary: Boolean,
+    val creationDate: Long
 )

@@ -37,6 +37,10 @@ class SearchDetailViewModel(
             is SearchDetailAction.OnSaveContractorClick -> {
                 saveContractor(action.isTemporary)
             }
+
+            is SearchDetailAction.OnBackClick -> {
+                saveContractor(action.isTemporary)
+            }
         }
     }
 
@@ -72,17 +76,22 @@ class SearchDetailViewModel(
         }
     }
 
+    // TODO: split method for two? Now after back click saved contractor from non temporary became
+    //  temporary. Need to check some things while trying to save temporary contractor.
     private fun saveContractor(isTemporary: Boolean = false) {
         viewModelScope.launch {
             if (state.value.contractor != null) {
-                val result = localContractorDataSource.upsertContractor(state.value.contractor!!)
+                val contractor = state.value.contractor!!.copy(temporary = isTemporary)
+                val result = localContractorDataSource.upsertContractor(contractor)
 
                 when(result) {
                     is Result.Error -> {
                         eventChannel.send(SearchDetailEvent.Error(result.error.toString()))
                     }
                     is Result.Success -> {
-                        eventChannel.send(SearchDetailEvent.Success("Kontrahent pomyślnie zapisany"))
+                        if (!isTemporary){
+                            eventChannel.send(SearchDetailEvent.Success("Kontrahent pomyślnie zapisany"))
+                        }
                     }
                 }
             }

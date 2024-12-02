@@ -76,7 +76,10 @@ private fun SearchDetailScreen(
                 titleRes = null,
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconContentDescription = "Navigation icon",
-                onNavigationClick = onBackClick,
+                onNavigationClick = {
+                    onBackClick()
+                    onAction(SearchDetailAction.OnBackClick(isTemporary = true))
+                },
                 actions = {
                     IconButton(onClick = { onAction(SearchDetailAction.OnSaveContractorClick()) }) {
                         Icon(

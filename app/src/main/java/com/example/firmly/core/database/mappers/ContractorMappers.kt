@@ -49,7 +49,7 @@ fun ContractorDetail.toContractorEntity(): ContractorEntity {
         state = state,
         phone = phone,
         temporary = temporary,
-//        creationDate =
+        creationDate = System.currentTimeMillis()
     )
 }
 
