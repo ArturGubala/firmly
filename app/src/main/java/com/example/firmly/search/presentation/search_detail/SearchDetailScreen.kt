@@ -78,7 +78,7 @@ private fun SearchDetailScreen(
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = {
                     onBackClick()
-                    onAction(SearchDetailAction.OnBackClick(isTemporary = true))
+                    onAction(SearchDetailAction.OnBackClick)
                 },
                 actions = {
                     IconButton(onClick = { onAction(SearchDetailAction.OnSaveContractorClick()) }) {
@@ -92,23 +92,22 @@ private fun SearchDetailScreen(
             )
         }
     ) { padding ->
-            if (state.isLoading) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            } else if (state.contractor != null){
-                DetailScreenContent(
-                    contractorDetail = state.contractor,
-                    modifier = Modifier
-                        .padding(padding)
-                        .padding(horizontal = 10.dp)
-                        .fillMaxWidth(),
-                )
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
             }
-
+        } else if (state.contractor != null){
+            DetailScreenContent(
+                contractorDetail = state.contractor,
+                modifier = Modifier
+                    .padding(padding)
+                    .padding(horizontal = 10.dp)
+                    .fillMaxWidth(),
+            )
+        }
     }
 }

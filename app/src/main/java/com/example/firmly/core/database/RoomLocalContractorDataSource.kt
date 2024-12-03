@@ -2,6 +2,7 @@ package com.example.firmly.core.database
 
 import android.database.sqlite.SQLiteFullException
 import com.example.firmly.core.database.dao.ContractorDao
+import com.example.firmly.core.database.mappers.toContractorDetail
 import com.example.firmly.core.database.mappers.toContractorEntity
 import com.example.firmly.core.database.mappers.toContractorListItem
 import com.example.firmly.core.domain.contractor.ContractorDetail
@@ -22,6 +23,11 @@ class RoomLocalContractorDataSource(
             .map { contractorEntities ->
                 contractorEntities.map { it.toContractorListItem() }
             }
+    }
+
+    override fun getContractorById(id: String): Flow<ContractorDetail?> {
+        return contractorDao.getContractorById(id)
+            .map { it?.toContractorDetail() }
     }
 
     override fun getContractorByType(
@@ -46,5 +52,13 @@ class RoomLocalContractorDataSource(
 
     override suspend fun deleteContractor(id: String) {
         contractorDao.deleteContractor(id)
+    }
+
+    override fun getNumberOfTemporaryContractors(): Flow<Int> {
+        return contractorDao.getNumberOfTemporaryContractors()
+    }
+
+    override fun getIdOfEarliestAddedTemporaryContractor(): Flow<String> {
+        return contractorDao.getIdOfEarliestAddedTemporaryContractor()
     }
 }

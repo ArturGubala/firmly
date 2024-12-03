@@ -15,9 +15,18 @@ interface ContractorDao {
     @Query("SELECT * FROM contractorentity")
     fun getContractors(): Flow<List<ContractorEntity>>
 
+    @Query("SELECT * FROM contractorentity WHERE id = :id")
+    fun getContractorById(id: String): Flow<ContractorEntity?>
+
     @Query("SELECT * FROM contractorentity WHERE `temporary` = :type LIMIT :numberOfResults")
     fun getContractorByType(type: Short, numberOfResults: Int): Flow<List<ContractorEntity>>
 
     @Query("DELETE FROM contractorentity WHERE id = :id")
     suspend fun deleteContractor(id: String)
+
+    @Query("SELECT COUNT(id) FROM contractorentity WHERE `temporary` = 1")
+    fun getNumberOfTemporaryContractors(): Flow<Int>
+
+    @Query("SELECT id FROM contractorentity WHERE `temporary` = 1 ORDER BY creationDate ASC LIMIT 1")
+    fun getIdOfEarliestAddedTemporaryContractor(): Flow<String>
 }

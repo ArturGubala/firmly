@@ -8,7 +8,10 @@ typealias ContractorId = String
 
 interface LocalContractorDataSource {
     fun getContractors(): Flow<List<ContractorListItem>>
+    fun getContractorById(id: String): Flow<ContractorDetail?>
     fun getContractorByType(type: Short, numberOfResults: Int): Flow<List<ContractorListItem>>
     suspend fun upsertContractor(contractor: ContractorDetail): Result<ContractorId, DataError.Local>
     suspend fun deleteContractor(id: String)
+    fun getNumberOfTemporaryContractors(): Flow<Int>
+    fun getIdOfEarliestAddedTemporaryContractor(): Flow<String>
 }

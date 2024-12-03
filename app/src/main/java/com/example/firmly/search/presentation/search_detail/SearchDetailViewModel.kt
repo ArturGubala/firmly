@@ -2,12 +2,14 @@ package com.example.firmly.search.presentation.search_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.firmly.core.domain.contractor.ContractorDetail
 import com.example.firmly.core.domain.contractor.LocalContractorDataSource
 import com.example.firmly.core.domain.contractor.RemoteContractorDataSource
 import com.example.firmly.core.domain.util.Result
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
@@ -39,7 +41,7 @@ class SearchDetailViewModel(
             }
 
             is SearchDetailAction.OnBackClick -> {
-                saveContractor(action.isTemporary)
+                saveTemporaryContractor()
             }
         }
     }
@@ -76,12 +78,37 @@ class SearchDetailViewModel(
         }
     }
 
-    // TODO: split method for two? Now after back click saved contractor from non temporary became
-    //  temporary. Need to check some things while trying to save temporary contractor.
     private fun saveContractor(isTemporary: Boolean = false) {
+        val contractor = state.value.contractor!!.copy(temporary = isTemporary)
+        saveContractorToDb(contractor)
+    }
+
+    private fun saveTemporaryContractor() {
+        viewModelScope.launch {
+            val contractor = localContractorDataSource.getContractorById(state.value.contractor!!.id).first()
+            if (contractor != null) {
+                return@launch
+            }
+
+            var numberOfTemporaryContractors: Int = localContractorDataSource
+                .getNumberOfTemporaryContractors()
+                .first()
+
+            if (numberOfTemporaryContractors == 5){
+                val earlierAddedTemporaryContractorId: String = localContractorDataSource
+                    .getIdOfEarliestAddedTemporaryContractor()
+                    .first()
+                localContractorDataSource.deleteContractor(earlierAddedTemporaryContractorId)
+            }
+
+            val contractorForInsert = state.value.contractor!!.copy(temporary = true)
+            saveContractorToDb(contractorForInsert)
+        }
+    }
+
+    private fun saveContractorToDb(contractor: ContractorDetail) {
         viewModelScope.launch {
             if (state.value.contractor != null) {
-                val contractor = state.value.contractor!!.copy(temporary = isTemporary)
                 val result = localContractorDataSource.upsertContractor(contractor)
 
                 when(result) {
@@ -89,7 +116,7 @@ class SearchDetailViewModel(
                         eventChannel.send(SearchDetailEvent.Error(result.error.toString()))
                     }
                     is Result.Success -> {
-                        if (!isTemporary){
+                        if (!contractor.temporary){
                             eventChannel.send(SearchDetailEvent.Success("Kontrahent pomyślnie zapisany"))
                         }
                     }
