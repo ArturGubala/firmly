@@ -1,6 +1,7 @@
 package com.example.firmly.search.presentation.search_detail
 
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -54,6 +55,11 @@ internal fun SearchDetailRoute(
                 ).show()
             }
         }
+    }
+
+    BackHandler {
+        onBackClick()
+        viewModel.onAction(SearchDetailAction.OnBackClick)
     }
 
     SearchDetailScreen(
