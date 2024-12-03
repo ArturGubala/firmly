@@ -41,10 +41,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
+import com.example.firmly.core.presentation.components.TextWithTitle
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
 import com.example.firmly.search.navigation.navigateToSearchDetail
-import com.example.firmly.core.presentation.components.TextWithTitle
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -110,259 +110,248 @@ private fun SearchListScreen(
         },
         content = { padding ->
 
-            Column(
-                modifier = Modifier.Companion
+            LazyColumn(
+                modifier = Modifier
                     .padding(padding)
                     .fillMaxSize(),
-                horizontalAlignment = Alignment.Companion.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                LazyColumn(
-                    modifier = Modifier.Companion.fillMaxSize(),
-                ) {
-                    items(state.contractors) { contractor ->
-                        Card(
-                            modifier = Modifier.Companion
-                                .fillMaxWidth(.96f)
-                                .padding(top = 10.dp),
-                            onClick = { onAction(SearchListAction.OnContractorCardClick(contractor.id)) }
+                items(state.contractors) { contractor ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth(.96f)
+                            .padding(top = 10.dp),
+                        onClick = {
+                            onAction(SearchListAction.OnContractorCardClick(contractor.id))
+                        }
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 5.dp)
                         ) {
-                            Column(
-                                modifier = Modifier.Companion
-                                    .padding(horizontal = 7.dp, vertical = 5.dp)
+                            TextWithTitle(
+                                fieldName = "Nazwa",
+                                fieldText = contractor.name,
+                                bottomSpace = 10.dp
+                            )
+                            Row(
+                                Modifier.fillMaxWidth()
                             ) {
                                 TextWithTitle(
-                                    fieldName = "Nazwa",
-                                    fieldText = contractor.name,
-                                    bottomSpace = 10.dp
+                                    fieldName = "Kod pocztowy",
+                                    fieldText = contractor.postalCode ?: "",
+                                    occupyWidth = .4f
                                 )
-                                Row(
-                                    Modifier.Companion
-                                        .fillMaxWidth()
-                                ) {
-                                    TextWithTitle(
-                                        fieldName = "Kod pocztowy",
-                                        fieldText = contractor.postalCode ?: "",
-                                        occupyWidth = .4f
-                                    )
-                                    TextWithTitle(
-                                        fieldName = "Miasto",
-                                        fieldText = contractor.city ?: ""
-                                    )
-                                }
-                                Row(
-                                    Modifier.Companion
-                                        .fillMaxWidth()
-                                ) {
-                                    TextWithTitle(
-                                        fieldName = "NIP",
-                                        fieldText = contractor.taxNumber,
-                                        bottomSpace = 0.dp,
-                                        occupyWidth = .4f
-                                    )
-                                    TextWithTitle(
-                                        fieldName = "Regon",
-                                        fieldText = contractor.buisnessRegistryNumber,
-                                        bottomSpace = 0.dp,
-                                    )
-                                }
+                                TextWithTitle(
+                                    fieldName = "Miasto",
+                                    fieldText = contractor.city ?: ""
+                                )
+                            }
+                            Row(
+                                Modifier.fillMaxWidth()
+                            ) {
+                                TextWithTitle(
+                                    fieldName = "NIP",
+                                    fieldText = contractor.taxNumber,
+                                    bottomSpace = 0.dp,
+                                    occupyWidth = .4f
+                                )
+                                TextWithTitle(
+                                    fieldName = "Regon",
+                                    fieldText = contractor.buisnessRegistryNumber,
+                                    bottomSpace = 0.dp,
+                                )
                             }
                         }
                     }
                 }
+            }
 
-                if (openBottomSheet) {
+            if (openBottomSheet) {
 
-                    ModalBottomSheet(
-                        onDismissRequest = { openBottomSheet = false },
-                        sheetState = bottomSheetState,
-                    ) {
-                        Column(modifier = Modifier.Companion.padding(horizontal = 10.dp)) {
-                            Row(
-                                Modifier.Companion
-                                    .fillMaxWidth(),
-                            ) {
-                                OutlinedTextField(
-                                    value = state.queryParameters.taxNumber,
-                                    onValueChange = { onAction(SearchListAction.OnTaxNumberFieldEnter(it)) },
-                                    Modifier.Companion
-                                        .fillMaxWidth(.5f)
-                                        .padding(end = 5.dp),
-                                    label = { Text("NIP") },
-                                    keyboardOptions = KeyboardOptions(
-                                        keyboardType = KeyboardType.Companion.Number,
-                                        imeAction = ImeAction.Companion.Next
-                                    ),
-                                    keyboardActions = KeyboardActions(
-                                        onSearch = {
-                                            showText = true
-                                        }
-                                    ),
-                                    trailingIcon = {
-                                        if (state.queryParameters.taxNumber.isNotBlank()) {
-                                            Icon(Icons.Default.Clear,
-                                                contentDescription = "clear text",
-                                                modifier = Modifier.Companion.clickable {
-                                                    onAction(
-                                                        SearchListAction.OnClearFieldIconClick(
-                                                            SearchListViewModel.Field.TAX_NUMBER
-                                                        )
-                                                    )
-                                                }
-                                            )
-                                        }
+                ModalBottomSheet(
+                    onDismissRequest = { openBottomSheet = false },
+                    sheetState = bottomSheetState,
+                ) {
+                    Column(modifier = Modifier.padding(horizontal = 10.dp)) {
+                        Row(
+                            Modifier.fillMaxWidth(),
+                        ) {
+                            OutlinedTextField(
+                                value = state.queryParameters.taxNumber,
+                                onValueChange = { onAction(SearchListAction.OnTaxNumberFieldEnter(it)) },
+                                Modifier.fillMaxWidth(.5f)
+                                    .padding(end = 5.dp),
+                                label = { Text("NIP") },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Companion.Number,
+                                    imeAction = ImeAction.Companion.Next
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onSearch = {
+                                        showText = true
                                     }
-                                )
-
-                                OutlinedTextField(
-                                    value = state.queryParameters.businessRegistryNumber,
-                                    onValueChange = {
-                                        onAction(
-                                            SearchListAction.OnBusinessRegistryNumberFieldEnter(
-                                                it
-                                            )
+                                ),
+                                trailingIcon = {
+                                    if (state.queryParameters.taxNumber.isNotBlank()) {
+                                        Icon(Icons.Default.Clear,
+                                            contentDescription = "clear text",
+                                            modifier = Modifier.clickable {
+                                                onAction(
+                                                    SearchListAction.OnClearFieldIconClick(
+                                                        SearchListViewModel.Field.TAX_NUMBER
+                                                    )
+                                                )
+                                            }
                                         )
-                                    },
-                                    label = { Text("REGON") },
-                                    modifier = Modifier.Companion
-                                        .fillMaxWidth()
-                                        .padding(start = 5.dp),
-                                    keyboardOptions = KeyboardOptions(
-                                        keyboardType = KeyboardType.Companion.Number,
-                                        imeAction = ImeAction.Companion.Next
-                                    ),
-                                    trailingIcon = {
-                                        if (state.queryParameters.businessRegistryNumber.isNotBlank()) {
-                                            Icon(Icons.Default.Clear,
-                                                contentDescription = "clear text",
-                                                modifier = Modifier.Companion.clickable {
-                                                    onAction(
-                                                        SearchListAction.OnClearFieldIconClick(
-                                                            SearchListViewModel.Field.BUSINESS_REGISTRY_NUMBER
-                                                        )
-                                                    )
-                                                }
-                                            )
-                                        }
                                     }
-                                )
-                            }
+                                }
+                            )
 
-                            Row(
-                                Modifier.Companion
+                            OutlinedTextField(
+                                value = state.queryParameters.businessRegistryNumber,
+                                onValueChange = {
+                                    onAction(
+                                        SearchListAction.OnBusinessRegistryNumberFieldEnter(
+                                            it
+                                        )
+                                    )
+                                },
+                                label = { Text("REGON") },
+                                modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(bottom = 5.dp),
-                            ) {
-                                OutlinedTextField(
-                                    value = state.queryParameters.name,
-                                    onValueChange = { onAction(SearchListAction.OnNameFieldEnter(it)) },
-                                    label = { Text("NAZWA") },
-                                    modifier = Modifier.Companion.fillMaxWidth(),
-                                    keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Companion.Next
-                                    ),
-                                    trailingIcon = {
-                                        if (state.queryParameters.name.isNotBlank()) {
-                                            Icon(Icons.Default.Clear,
-                                                contentDescription = "clear text",
-                                                modifier = Modifier.Companion.clickable {
-                                                    onAction(
-                                                        SearchListAction.OnClearFieldIconClick(
-                                                            SearchListViewModel.Field.NAME
-                                                        )
+                                    .padding(start = 5.dp),
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Companion.Number,
+                                    imeAction = ImeAction.Companion.Next
+                                ),
+                                trailingIcon = {
+                                    if (state.queryParameters.businessRegistryNumber.isNotBlank()) {
+                                        Icon(Icons.Default.Clear,
+                                            contentDescription = "clear text",
+                                            modifier = Modifier.clickable {
+                                                onAction(
+                                                    SearchListAction.OnClearFieldIconClick(
+                                                        SearchListViewModel.Field.BUSINESS_REGISTRY_NUMBER
                                                     )
-                                                }
-                                            )
-                                        }
+                                                )
+                                            }
+                                        )
                                     }
-                                )
-                            }
+                                }
+                            )
+                        }
 
-                            Row(
-                                Modifier.Companion
+                        Row(
+                            Modifier.fillMaxWidth().padding(bottom = 5.dp),
+                        ) {
+                            OutlinedTextField(
+                                value = state.queryParameters.name,
+                                onValueChange = { onAction(SearchListAction.OnNameFieldEnter(it)) },
+                                label = { Text("NAZWA") },
+                                modifier = Modifier.fillMaxWidth(),
+                                keyboardOptions = KeyboardOptions(
+                                    imeAction = ImeAction.Companion.Next
+                                ),
+                                trailingIcon = {
+                                    if (state.queryParameters.name.isNotBlank()) {
+                                        Icon(Icons.Default.Clear,
+                                            contentDescription = "clear text",
+                                            modifier = Modifier.clickable {
+                                                onAction(
+                                                    SearchListAction.OnClearFieldIconClick(
+                                                        SearchListViewModel.Field.NAME
+                                                    )
+                                                )
+                                            }
+                                        )
+                                    }
+                                }
+                            )
+                        }
+
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 5.dp),
+                        ) {
+                            OutlinedTextField(
+                                value = state.queryParameters.firstName,
+                                onValueChange = { onAction(SearchListAction.OnFirstNameFieldEnter(it)) },
+                                Modifier.fillMaxWidth(.5f).padding(end = 5.dp),
+                                label = { Text("IMIE") },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Companion.Text,
+                                    imeAction = ImeAction.Companion.Next
+                                ),
+                                keyboardActions = KeyboardActions(
+                                    onSearch = {
+                                        showText = true
+                                    }
+                                ),
+                                trailingIcon = {
+                                    if (state.queryParameters.firstName.isNotBlank()) {
+                                        Icon(Icons.Default.Clear,
+                                            contentDescription = "clear text",
+                                            modifier = Modifier.clickable {
+                                                onAction(
+                                                    SearchListAction.OnClearFieldIconClick(
+                                                        SearchListViewModel.Field.FIRST_NAME
+                                                    )
+                                                )
+                                            }
+                                        )
+                                    }
+                                }
+                            )
+
+                            OutlinedTextField(
+                                value = state.queryParameters.lastName,
+                                onValueChange = { onAction(SearchListAction.OnLastNameFieldEnter(it)) },
+                                label = { Text("NAZWISKO") },
+                                modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(bottom = 5.dp),
-                            ) {
-                                OutlinedTextField(
-                                    value = state.queryParameters.firstName,
-                                    onValueChange = { onAction(SearchListAction.OnFirstNameFieldEnter(it)) },
-                                    Modifier.Companion
-                                        .fillMaxWidth(.5f)
-                                        .padding(end = 5.dp),
-                                    label = { Text("IMIE") },
-                                    keyboardOptions = KeyboardOptions(
-                                        keyboardType = KeyboardType.Companion.Text,
-                                        imeAction = ImeAction.Companion.Next
-                                    ),
-                                    keyboardActions = KeyboardActions(
-                                        onSearch = {
-                                            showText = true
-                                        }
-                                    ),
-                                    trailingIcon = {
-                                        if (state.queryParameters.firstName.isNotBlank()) {
-                                            Icon(Icons.Default.Clear,
-                                                contentDescription = "clear text",
-                                                modifier = Modifier.Companion.clickable {
-                                                    onAction(
-                                                        SearchListAction.OnClearFieldIconClick(
-                                                            SearchListViewModel.Field.FIRST_NAME
-                                                        )
+                                    .padding(start = 5.dp),
+                                keyboardOptions = KeyboardOptions(
+                                    imeAction = ImeAction.Companion.Next
+                                ),
+                                trailingIcon = {
+                                    if (state.queryParameters.lastName.isNotBlank()) {
+                                        Icon(Icons.Default.Clear,
+                                            contentDescription = "clear text",
+                                            modifier = Modifier.clickable {
+                                                onAction(
+                                                    SearchListAction.OnClearFieldIconClick(
+                                                        SearchListViewModel.Field.LAST_NAME
                                                     )
-                                                }
-                                            )
-                                        }
+                                                )
+                                            }
+                                        )
                                     }
-                                )
+                                }
+                            )
+                        }
 
-                                OutlinedTextField(
-                                    value = state.queryParameters.lastName,
-                                    onValueChange = { onAction(SearchListAction.OnLastNameFieldEnter(it)) },
-                                    label = { Text("NAZWISKO") },
-                                    modifier = Modifier.Companion
-                                        .fillMaxWidth()
-                                        .padding(start = 5.dp),
-                                    keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Companion.Next
-                                    ),
-                                    trailingIcon = {
-                                        if (state.queryParameters.lastName.isNotBlank()) {
-                                            Icon(Icons.Default.Clear,
-                                                contentDescription = "clear text",
-                                                modifier = Modifier.Companion.clickable {
-                                                    onAction(
-                                                        SearchListAction.OnClearFieldIconClick(
-                                                            SearchListViewModel.Field.LAST_NAME
-                                                        )
-                                                    )
-                                                }
-                                            )
-                                        }
-                                    }
-                                )
-                            }
-
-                            Row(
-                                Modifier.Companion
+                        Row(
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 5.dp),
+                        ) {
+                            FilledIconButton(
+                                onClick = {
+                                    openBottomSheet = false
+                                    onAction(SearchListAction.OnSearchContractorClick)
+                                },
+                                Modifier
                                     .fillMaxWidth()
-                                    .padding(bottom = 5.dp),
                             ) {
-                                FilledIconButton(
-                                    onClick = {
-                                        openBottomSheet = false
-                                        onAction(SearchListAction.OnSearchContractorClick)
-                                    },
-                                    Modifier.Companion
-                                        .fillMaxWidth()
+                                Row(
+                                    verticalAlignment = Alignment.Companion.CenterVertically
                                 ) {
-                                    Row(
-                                        verticalAlignment = Alignment.Companion.CenterVertically
-                                    ) {
-                                        Icon(
-                                            Icons.Default.Search,
-                                            contentDescription = "search",
-                                        )
-                                        Text(text = "WYSZUKAJ")
-                                    }
+                                    Icon(
+                                        Icons.Default.Search,
+                                        contentDescription = "search",
+                                    )
+                                    Text(text = "WYSZUKAJ")
                                 }
                             }
                         }
