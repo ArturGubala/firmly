@@ -27,6 +27,7 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.firmly.contractors.data.di.contractorModule
+import com.example.firmly.contractors.di.contractorViewModelModule
 import com.example.firmly.core.database.di.databaseModule
 import com.example.firmly.core.di.appModule
 import com.example.firmly.core.presentation.components.FirmlyBackground
@@ -49,6 +50,7 @@ class FirmlyCore: Application() {
                 contractorModule,
                 searchViewModelModule,
                 databaseModule,
+                contractorViewModelModule,
             )
         }
     }
@@ -135,4 +137,4 @@ internal fun FirmlyApp(
 private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopLevelDestination) =
     this?.hierarchy?.any {
         it.route?.contains(destination.name, true) ?: false
-    } ?: false
+    } == true

@@ -24,7 +24,10 @@ fun FirmlyNavHost(
         modifier = modifier,
     ) {
         homeScreen(onBackClick = { navController.popBackStack() })
-        contractorsScreen(onBackClick = { navController.popBackStack() })
+        contractorsScreen(
+            navController = navController,
+            onBackClick = { navController.popBackStack() }
+        )
         searchListScreen(
             navController = navController,
             onBackClick = { navController.popBackStack() }
