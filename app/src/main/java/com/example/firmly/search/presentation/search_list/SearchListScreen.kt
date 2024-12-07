@@ -3,13 +3,16 @@ package com.example.firmly.search.presentation.search_list
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -17,7 +20,8 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
@@ -110,56 +114,67 @@ private fun SearchListScreen(
         },
         content = { padding ->
 
-            LazyColumn(
-                modifier = Modifier
-                    .padding(padding)
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(state.contractors) { contractor ->
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth(.96f)
-                            .padding(top = 10.dp),
-                        onClick = {
-                            onAction(SearchListAction.OnContractorCardClick(contractor.id))
-                        }
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 5.dp)
-                        ) {
-                            TextWithTitle(
-                                fieldName = "Nazwa",
-                                fieldText = contractor.name,
-                                bottomSpace = 10.dp
-                            )
-                            Row(
-                                Modifier.fillMaxWidth()
-                            ) {
-                                TextWithTitle(
-                                    fieldName = "Kod pocztowy",
-                                    fieldText = contractor.postalCode ?: "",
-                                    occupyWidth = .4f
-                                )
-                                TextWithTitle(
-                                    fieldName = "Miasto",
-                                    fieldText = contractor.city ?: ""
-                                )
+            if (state.isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(padding)
+                        .fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    itemsIndexed(state.contractors) { index, contractor ->
+                        ElevatedCard(
+                            modifier = Modifier
+                                .fillMaxWidth(.96f)
+                                .padding(top = 10.dp)
+                                .padding(bottom = if (index == state.contractors.lastIndex) 10.dp else 0.dp),
+                            onClick = {
+                                onAction(SearchListAction.OnContractorCardClick(contractor.id))
                             }
-                            Row(
-                                Modifier.fillMaxWidth()
+                        ) {
+                            Column(
+                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 5.dp)
                             ) {
                                 TextWithTitle(
-                                    fieldName = "NIP",
-                                    fieldText = contractor.taxNumber,
-                                    bottomSpace = 0.dp,
-                                    occupyWidth = .4f
+                                    fieldName = "Nazwa",
+                                    fieldText = contractor.name,
+                                    bottomSpace = 10.dp
                                 )
-                                TextWithTitle(
-                                    fieldName = "Regon",
-                                    fieldText = contractor.buisnessRegistryNumber,
-                                    bottomSpace = 0.dp,
-                                )
+                                Row(
+                                    Modifier.fillMaxWidth()
+                                ) {
+                                    TextWithTitle(
+                                        fieldName = "NIP",
+                                        fieldText = contractor.taxNumber,
+                                        bottomSpace = 0.dp,
+                                        occupyWidth = .4f
+                                    )
+                                    TextWithTitle(
+                                        fieldName = "Regon",
+                                        fieldText = contractor.buisnessRegistryNumber,
+                                        bottomSpace = 0.dp,
+                                    )
+                                }
+                                Row(
+                                    Modifier.fillMaxWidth()
+                                ) {
+                                    TextWithTitle(
+                                        fieldName = "Kod pocztowy",
+                                        fieldText = contractor.postalCode ?: "",
+                                        occupyWidth = .4f
+                                    )
+                                    TextWithTitle(
+                                        fieldName = "Miasto",
+                                        fieldText = contractor.city ?: ""
+                                    )
+                                }
                             }
                         }
                     }
@@ -171,10 +186,12 @@ private fun SearchListScreen(
                 ModalBottomSheet(
                     onDismissRequest = { openBottomSheet = false },
                     sheetState = bottomSheetState,
+                    contentWindowInsets = { WindowInsets.navigationBars }
                 ) {
                     Column(modifier = Modifier.padding(horizontal = 10.dp)) {
                         Row(
-                            Modifier.fillMaxWidth(),
+                            Modifier.fillMaxWidth()
+                            .padding(bottom = 5.dp)
                         ) {
                             OutlinedTextField(
                                 value = state.queryParameters.taxNumber,

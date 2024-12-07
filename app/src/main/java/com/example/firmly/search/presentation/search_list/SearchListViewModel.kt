@@ -127,6 +127,7 @@ class SearchListViewModel(
 
     private fun search() {
         viewModelScope.launch {
+            state = state.copy(isLoading = true)
             val result = remoteContractorDataSource.getContractorList(state.queryParameters.toMap())
 
             when(result) {
@@ -142,6 +143,8 @@ class SearchListViewModel(
                     )
                 }
             }
+
+            state = state.copy(isLoading = false)
         }
     }
 

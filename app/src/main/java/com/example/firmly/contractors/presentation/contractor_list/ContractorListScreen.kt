@@ -8,12 +8,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -107,7 +108,7 @@ private fun ContractorListScreen(
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    items(state.contractors) { contractor ->
+                    itemsIndexed(state.contractors) { index, contractor ->
                         ListItem(
                             modifier = Modifier.clickable {
                                 onAction(ContractorListAction.OnContractorCardClick(contractor.id))
@@ -123,6 +124,9 @@ private fun ContractorListScreen(
                                 }
                             }
                         )
+                        if (index != state.contractors.lastIndex){
+                            HorizontalDivider()
+                        }
                     }
                 }
             }
