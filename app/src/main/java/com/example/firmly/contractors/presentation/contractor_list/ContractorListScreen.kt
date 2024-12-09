@@ -4,11 +4,14 @@ import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
@@ -20,9 +23,12 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SecondaryTabRow
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,6 +37,7 @@ import androidx.navigation.NavController
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -92,6 +99,7 @@ private fun ContractorListScreen(
             )
         },
         content = { padding ->
+            val pagerState = rememberPagerState(pageCount = { 2 })
 
             if (state.isLoading) {
                 Box(
@@ -102,30 +110,63 @@ private fun ContractorListScreen(
                     CircularProgressIndicator()
                 }
             } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .padding(padding)
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Column(
+                    modifier = Modifier.padding(padding)
                 ) {
-                    itemsIndexed(state.contractors) { index, contractor ->
-                        ListItem(
-                            modifier = Modifier.clickable {
-                                onAction(ContractorListAction.OnContractorCardClick(contractor.id))
+                    SecondaryTabRow(
+                        selectedTabIndex = pagerState.currentPage
+                    ) {
+                        val scope = rememberCoroutineScope()
+
+                        Tab(
+                            selected = true,
+                            onClick = {
+                                scope.launch {
+                                    pagerState.scrollToPage(0)
+                                }
                             },
-                            headlineContent = {
-                                Text(text = contractor.name)
+                            text = { Text("Zapisani") }
+
+                        )
+                        Tab(
+                            selected = true,
+                            onClick = {
+                                scope.launch {
+                                    pagerState.scrollToPage(1)
+                                }
                             },
-                            supportingContent = {
-                                Row {
-                                    Text(text = "NIP: ${contractor.taxNumber}")
-                                    Text(text = " | ")
-                                    Text(text = "REGON: ${contractor.buisnessRegistryNumber}")
+                            text = { Text("Przeglądani") }
+
+                        )
+                    }
+                    HorizontalPager(
+                        state = pagerState
+                    ) { page ->
+                        LazyColumn(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            itemsIndexed(state.contractors) { index, contractor ->
+                                ListItem(
+                                    modifier = Modifier.clickable {
+                                        onAction(ContractorListAction.OnContractorCardClick(contractor.id))
+                                    },
+                                    headlineContent = {
+                                        Text(text = contractor.name)
+                                    },
+                                    supportingContent = {
+                                        Row {
+                                            Text(text = "NIP: ${contractor.taxNumber}")
+                                            Text(text = " | ")
+                                            Text(text = "REGON: ${contractor.buisnessRegistryNumber}")
+                                        }
+                                    }
+                                )
+                                if (index != state.contractors.lastIndex){
+                                    HorizontalDivider()
                                 }
                             }
-                        )
-                        if (index != state.contractors.lastIndex){
-                            HorizontalDivider()
                         }
                     }
                 }
