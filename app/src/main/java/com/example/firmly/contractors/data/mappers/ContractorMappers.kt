@@ -16,7 +16,8 @@ fun ContractorDto.toContractorListItem(): ContractorListItem {
         city = companyAddress?.city,
         postalCode = companyAddress?.postalCode,
         taxNumber = owner.taxNumber,
-        buisnessRegistryNumber = owner.buisnessRegistryNumber
+        buisnessRegistryNumber = owner.buisnessRegistryNumber,
+        temporary = true
     )
 }
 

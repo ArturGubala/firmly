@@ -9,5 +9,6 @@ data class ContractorListItem(
     val city: String?,
     val postalCode: String?,
     val taxNumber: String,
-    val buisnessRegistryNumber: String
+    val buisnessRegistryNumber: String,
+    val temporary: Boolean
 )

@@ -64,5 +64,6 @@ fun ContractorEntity.toContractorListItem(): ContractorListItem {
         postalCode = postalCode,
         taxNumber = taxNumber,
         buisnessRegistryNumber = buisnessRegistryNumber,
+        temporary = temporary
     )
 }

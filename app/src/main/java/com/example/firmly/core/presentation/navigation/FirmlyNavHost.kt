@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.example.firmly.FirmlyAppState
-import com.example.firmly.contractors.navigation.contractorsScreen
+import com.example.firmly.contractors.navigation.contractorDetailScreen
+import com.example.firmly.contractors.navigation.contractorListScreen
 import com.example.firmly.home.navigation.HOME_ROUTE
 import com.example.firmly.home.navigation.homeScreen
 import com.example.firmly.search.navigation.searchDetailScreen
@@ -24,10 +25,11 @@ fun FirmlyNavHost(
         modifier = modifier,
     ) {
         homeScreen(onBackClick = { navController.popBackStack() })
-        contractorsScreen(
+        contractorListScreen(
             navController = navController,
             onBackClick = { navController.popBackStack() }
         )
+        contractorDetailScreen( onBackClick = { navController.popBackStack() } )
         searchListScreen(
             navController = navController,
             onBackClick = { navController.popBackStack() }

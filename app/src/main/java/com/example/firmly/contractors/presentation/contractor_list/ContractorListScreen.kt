@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.example.firmly.contractors.navigation.navigateToContractorDetail
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
@@ -60,7 +61,7 @@ internal fun ContractorsListRoute(
                 ).show()
             }
             is ContractorListEvent.NavigateToDetail -> {
-//                navController.navigateToSearchDetail(event.contractorId)
+                navController.navigateToContractorDetail(event.contractorId)
             }
         }
     }
@@ -147,10 +148,10 @@ private fun ContractorListScreen(
                                 .fillMaxSize(),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            itemsIndexed(state.contractors) { index, contractor ->
+                            itemsIndexed(state.contractors.filter { it.temporary == (page == 1) }) { index, contractor ->
                                 ListItem(
                                     modifier = Modifier.clickable {
-                                        onAction(ContractorListAction.OnContractorCardClick(contractor.id))
+                                        onAction(ContractorListAction.OnContractorClick(contractor.id))
                                     },
                                     headlineContent = {
                                         Text(text = contractor.name)

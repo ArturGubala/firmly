@@ -1,4 +1,4 @@
-package com.example.firmly.contractors.presentation.contractor_list
+package com.example.firmly.contractors.presentation.contractor_detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,33 +13,29 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ContractorListViewModel(
+class ContractorDetailViewModel(
+    contractorId: String,
     private val localContractorDataSource: LocalContractorDataSource
-): ViewModel() {
+) : ViewModel() {
 
-    private val _state = MutableStateFlow(ContractorListState())
+    private val _state = MutableStateFlow(ContractorDetailState())
     val state = _state
-        .onStart { getSavedContractors() }
+        .onStart { getContractorDetails(contractorId) }
         .stateIn(
             viewModelScope,
             SharingStarted.WhileSubscribed(5000L),
-            ContractorListState(),
+            ContractorDetailState(),
         )
 
-    private val eventChannel = Channel<ContractorListEvent>()
+    private val eventChannel = Channel<ContractorDetailEvent>()
     val events = eventChannel.receiveAsFlow()
 
-    fun onAction(action: ContractorListAction) {
+    fun onAction(action: ContractorDetailAction) {
         when(action) {
-            is ContractorListAction.OnContractorClick -> {
-                viewModelScope.launch {
-                    eventChannel.send(ContractorListEvent.NavigateToDetail(action.contractorId))
-                }
-            }
         }
     }
 
-    private fun getSavedContractors() {
+    private fun getContractorDetails(contractorId: String) {
         viewModelScope.launch {
             _state.update {
                 it.copy(
@@ -47,9 +43,9 @@ class ContractorListViewModel(
                 )
             }
 
-            val contractors = localContractorDataSource.getContractors().first()
+            val contractor = localContractorDataSource.getContractorById(contractorId).first()
             _state.value = _state.value.copy(
-                contractors = contractors
+                contractor = contractor
             )
 
             _state.update {
