@@ -12,7 +12,7 @@ interface ContractorDao {
     @Upsert
     suspend fun upsertContractor(contractor: ContractorEntity)
 
-    @Query("SELECT * FROM contractorentity")
+    @Query("SELECT * FROM contractorentity ORDER BY creationDate DESC")
     fun getContractors(): Flow<List<ContractorEntity>>
 
     @Query("SELECT * FROM contractorentity WHERE id = :id")
