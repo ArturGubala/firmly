@@ -1,7 +1,6 @@
 package com.example.firmly.contractors.presentation.contractor_detail
 
-import com.example.firmly.contractors.presentation.contractor_list.ContractorListEvent
-
 interface ContractorDetailEvent {
-    data class Error(val error: String): ContractorListEvent
+    data class Error(val error: String): ContractorDetailEvent
+    data class Success(val message: String): ContractorDetailEvent
 }

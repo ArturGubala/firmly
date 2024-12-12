@@ -41,7 +41,8 @@ fun ContractorDto.toContractorDetail(): ContractorDetail {
         startDate = startDate,
         state = state,
         phone = phone,
-        temporary = false
+        temporary = false,
+        creationDate = 0
     )
 }
 

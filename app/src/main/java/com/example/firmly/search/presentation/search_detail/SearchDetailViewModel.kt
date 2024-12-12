@@ -109,7 +109,9 @@ class SearchDetailViewModel(
     private fun saveContractorToDb(contractor: ContractorDetail) {
         viewModelScope.launch {
             if (state.value.contractor != null) {
-                val result = localContractorDataSource.upsertContractor(contractor)
+                val result = localContractorDataSource.upsertContractor(
+                    contractor.copy(creationDate = System.currentTimeMillis())
+                )
 
                 when(result) {
                     is Result.Error -> {

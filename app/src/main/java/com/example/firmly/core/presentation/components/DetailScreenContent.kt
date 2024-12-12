@@ -14,12 +14,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.firmly.core.domain.contractor.ContractorDetail
+import java.sql.Date
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun DetailScreenContent(
     contractorDetail: ContractorDetail,
     modifier: Modifier = Modifier,
 ) {
+    val dateFormat = SimpleDateFormat("dd.MM.yyyy HH:mm", Locale.getDefault())
+    val formattedDate = dateFormat.format(Date(contractorDetail.creationDate))
+
     Column(
         modifier = modifier,
     ) {
@@ -165,6 +171,17 @@ fun DetailScreenContent(
                 fieldName = "E-MAIL",
                 fieldText = "-",
             )
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        if (contractorDetail.creationDate != 0L) {
+            Row {
+                Text(
+                    text = "Ostatnia aktualizacja danych: $formattedDate.",
+                    fontSize = 12.sp,
+                )
+            }
         }
     }
 }

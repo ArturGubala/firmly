@@ -19,5 +19,6 @@ data class ContractorDetail(
     val startDate: String,
     val state: String,
     val phone: String?,
-    val temporary: Boolean
+    val temporary: Boolean,
+    val creationDate: Long
 )

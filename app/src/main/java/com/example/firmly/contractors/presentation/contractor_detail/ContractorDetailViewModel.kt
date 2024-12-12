@@ -32,6 +32,9 @@ class ContractorDetailViewModel(
 
     fun onAction(action: ContractorDetailAction) {
         when(action) {
+            is ContractorDetailAction.OnAddContractorClick -> {
+                saveTemporaryContractor()
+            }
         }
     }
 
@@ -53,6 +56,17 @@ class ContractorDetailViewModel(
                     isLoading = false
                 )
             }
+        }
+    }
+
+    private fun saveTemporaryContractor() {
+        viewModelScope.launch {
+            val contractorToUpdate = _state.value.contractor!!.copy(temporary = false)
+            localContractorDataSource.upsertContractor(contractorToUpdate)
+            _state.value = _state.value.copy(
+                contractor = contractorToUpdate
+            )
+            eventChannel.send(ContractorDetailEvent.Success("Kontrahent pomylnie zapisany"))
         }
     }
 }

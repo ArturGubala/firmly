@@ -24,7 +24,8 @@ fun ContractorEntity.toContractorDetail(): ContractorDetail {
         startDate = startDate,
         state = state,
         phone = phone,
-        temporary = temporary
+        temporary = temporary,
+        creationDate = creationDate
     )
 }
 
@@ -49,7 +50,7 @@ fun ContractorDetail.toContractorEntity(): ContractorEntity {
         state = state,
         phone = phone,
         temporary = temporary,
-        creationDate = System.currentTimeMillis()
+        creationDate = creationDate
     )
 }
 

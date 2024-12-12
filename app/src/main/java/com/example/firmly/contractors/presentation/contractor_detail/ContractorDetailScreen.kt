@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Update
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,6 +48,13 @@ internal fun ContractorDetailRoute (
                     Toast.LENGTH_LONG
                 ).show()
             }
+            is ContractorDetailEvent.Success -> {
+                Toast.makeText(
+                    context,
+                    event.message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
@@ -71,12 +80,29 @@ private fun ContractorDetailScreen(
                 navigationIconContentDescription = "Navigation icon",
                 onNavigationClick = { onBackClick() },
                 actions = {
-                    IconButton(onClick = {  }) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = "Add icon",
-                            tint = MaterialTheme.colorScheme.onSurface,
-                        )
+                    if (state.contractor != null && state.contractor.temporary) {
+                        IconButton(onClick = { onAction(ContractorDetailAction.OnAddContractorClick) }) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = "Add icon",
+                                tint = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
+                    } else {
+                        IconButton(onClick = {  }) {
+                            Icon(
+                                imageVector = Icons.Default.Update,
+                                contentDescription = "Update icon",
+                                tint = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
+                        IconButton(onClick = {  }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Delete icon",
+                                tint = MaterialTheme.colorScheme.onSurface,
+                            )
+                        }
                     }
                 }
             )
