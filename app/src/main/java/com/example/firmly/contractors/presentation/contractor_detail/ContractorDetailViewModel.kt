@@ -3,6 +3,8 @@ package com.example.firmly.contractors.presentation.contractor_detail
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.firmly.core.domain.contractor.LocalContractorDataSource
+import com.example.firmly.core.domain.contractor.RemoteContractorDataSource
+import com.example.firmly.core.domain.util.Result
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -12,10 +14,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlin.collections.first
 
 class ContractorDetailViewModel(
     contractorId: String,
-    private val localContractorDataSource: LocalContractorDataSource
+    private val localContractorDataSource: LocalContractorDataSource,
+    private val remoteContractorDataSource: RemoteContractorDataSource,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ContractorDetailState())
@@ -37,6 +41,9 @@ class ContractorDetailViewModel(
             }
             is ContractorDetailAction.OnDeleteContractorClick -> {
                 deleteContractor(action.contractorId)
+            }
+            is ContractorDetailAction.OnUpdateContractorClick -> {
+                updateContractor(action.contractorId)
             }
         }
     }
@@ -79,5 +86,41 @@ class ContractorDetailViewModel(
             eventChannel.send(ContractorDetailEvent.Success("Kontrahent usunięty"))
         }
 
+    }
+
+    private fun updateContractor(contractorId: String) {
+        viewModelScope.launch {
+            _state.update {
+                it.copy(
+                    isLoading = true
+                )
+            }
+
+            val result = remoteContractorDataSource.getContractor(contractorId)
+
+            when(result) {
+                is Result.Error -> {
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            contractor = null
+                        )
+                    }
+                    eventChannel.send(ContractorDetailEvent.Error(result.error.toString()))
+                }
+                is Result.Success -> {
+                    val fetchedContractor = result.data.first()
+                    val contractorToUpdate = fetchedContractor.copy(creationDate = System.currentTimeMillis())
+                    localContractorDataSource.upsertContractor(contractorToUpdate)
+
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            contractor = contractorToUpdate
+                        )
+                    }
+                }
+            }
+        }
     }
 }

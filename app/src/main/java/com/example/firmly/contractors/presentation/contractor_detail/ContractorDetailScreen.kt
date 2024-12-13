@@ -89,7 +89,7 @@ private fun ContractorDetailScreen(
                             )
                         }
                     } else {
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = { onAction(ContractorDetailAction.OnUpdateContractorClick(state.contractor!!.id)) }) {
                             Icon(
                                 imageVector = Icons.Default.Update,
                                 contentDescription = "Update icon",

@@ -8,5 +8,5 @@ import org.koin.dsl.module
 
 val contractorViewModelModule = module {
     viewModelOf(::ContractorListViewModel)
-    viewModel { ContractorDetailViewModel(get(), get()) }
+    viewModel { ContractorDetailViewModel(get(), get(), get()) }
 }

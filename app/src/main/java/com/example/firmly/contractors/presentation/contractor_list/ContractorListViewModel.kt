@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ContractorListViewModel(
-    private val localContractorDataSource: LocalContractorDataSource
+    private val localContractorDataSource: LocalContractorDataSource,
 ): ViewModel() {
 
     private val _state = MutableStateFlow(ContractorListState())
@@ -22,7 +22,7 @@ class ContractorListViewModel(
         .onStart { getSavedContractors() }
         .stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(2000L),
+            SharingStarted.WhileSubscribed(),
             ContractorListState(),
         )
 
