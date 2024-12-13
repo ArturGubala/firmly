@@ -35,6 +35,9 @@ class ContractorDetailViewModel(
             is ContractorDetailAction.OnAddContractorClick -> {
                 saveTemporaryContractor()
             }
+            is ContractorDetailAction.OnDeleteContractorClick -> {
+                deleteContractor(action.contractorId)
+            }
         }
     }
 
@@ -68,5 +71,13 @@ class ContractorDetailViewModel(
             )
             eventChannel.send(ContractorDetailEvent.Success("Kontrahent pomylnie zapisany"))
         }
+    }
+
+    private fun deleteContractor(contractorId: String) {
+        viewModelScope.launch {
+            localContractorDataSource.deleteContractor(contractorId)
+            eventChannel.send(ContractorDetailEvent.Success("Kontrahent usunięty"))
+        }
+
     }
 }

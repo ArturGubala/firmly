@@ -22,7 +22,7 @@ class ContractorListViewModel(
         .onStart { getSavedContractors() }
         .stateIn(
             viewModelScope,
-            SharingStarted.WhileSubscribed(5000L),
+            SharingStarted.WhileSubscribed(2000L),
             ContractorListState(),
         )
 

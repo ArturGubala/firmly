@@ -96,7 +96,10 @@ private fun ContractorDetailScreen(
                                 tint = MaterialTheme.colorScheme.onSurface,
                             )
                         }
-                        IconButton(onClick = {  }) {
+                        IconButton(onClick = {
+                            onAction(ContractorDetailAction.OnDeleteContractorClick(state.contractor!!.id))
+                            onBackClick()
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Delete,
                                 contentDescription = "Delete icon",
