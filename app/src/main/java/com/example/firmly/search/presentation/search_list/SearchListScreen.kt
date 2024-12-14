@@ -19,7 +19,6 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.Icon
@@ -42,8 +41,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.firmly.core.presentation.components.ContractorCard
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
-import com.example.firmly.core.presentation.components.TextWithTitle
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
 import com.example.firmly.search.navigation.navigateToSearchDetail
@@ -124,57 +123,15 @@ private fun SearchListScreen(
                 LazyColumn(
                     modifier = Modifier
                         .padding(padding)
+                        .padding(horizontal = 5.dp)
                         .fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     itemsIndexed(state.contractors) { index, contractor ->
-                        ElevatedCard(
-                            modifier = Modifier
-                                .fillMaxWidth(.96f)
-                                .padding(top = 10.dp)
-                                .padding(bottom = if (index == state.contractors.lastIndex) 10.dp else 0.dp),
-                            onClick = {
-                                onAction(SearchListAction.OnContractorCardClick(contractor.id))
-                            }
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(horizontal = 7.dp, vertical = 5.dp)
-                            ) {
-                                TextWithTitle(
-                                    fieldName = "Nazwa",
-                                    fieldText = contractor.name,
-                                    bottomSpace = 10.dp
-                                )
-                                Row(
-                                    Modifier.fillMaxWidth()
-                                ) {
-                                    TextWithTitle(
-                                        fieldName = "NIP",
-                                        fieldText = contractor.taxNumber,
-                                        bottomSpace = 0.dp,
-                                        occupyWidth = .4f
-                                    )
-                                    TextWithTitle(
-                                        fieldName = "Regon",
-                                        fieldText = contractor.buisnessRegistryNumber,
-                                        bottomSpace = 0.dp,
-                                    )
-                                }
-                                Row(
-                                    Modifier.fillMaxWidth()
-                                ) {
-                                    TextWithTitle(
-                                        fieldName = "Kod pocztowy",
-                                        fieldText = contractor.postalCode ?: "",
-                                        occupyWidth = .4f
-                                    )
-                                    TextWithTitle(
-                                        fieldName = "Miasto",
-                                        fieldText = contractor.city ?: ""
-                                    )
-                                }
-                            }
-                        }
+                        ContractorCard(
+                            contractor = contractor,
+                            lastItemPaddingBottom = if (index == state.contractors.lastIndex) 10.dp else 0.dp
+                        )
                     }
                 }
             }
