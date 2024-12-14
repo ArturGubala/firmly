@@ -15,12 +15,13 @@ import com.example.firmly.core.domain.contractor.ContractorListItem
 fun ContractorCard(
     contractor: ContractorListItem,
     lastItemPaddingBottom: Dp,
+    onCardClick: () -> Unit = {}
 ) {
     ElevatedCard(
         modifier = Modifier
             .padding(top = 10.dp)
             .padding(bottom = lastItemPaddingBottom),
-        onClick = {  }
+        onClick = { onCardClick() }
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 7.dp, vertical = 5.dp)
