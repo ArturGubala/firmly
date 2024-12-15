@@ -34,6 +34,7 @@ import com.example.firmly.core.presentation.components.FirmlyBackground
 import com.example.firmly.core.presentation.navigation.FirmlyNavHost
 import com.example.firmly.core.presentation.navigation.FirmlyNavigationSuiteScaffold
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
+import com.example.firmly.home.di.homeViewModelModule
 import com.example.firmly.search.di.searchViewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -51,6 +52,7 @@ class FirmlyCore: Application() {
                 searchViewModelModule,
                 databaseModule,
                 contractorViewModelModule,
+                homeViewModelModule,
             )
         }
     }

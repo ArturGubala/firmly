@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -124,13 +125,16 @@ private fun SearchListScreen(
                     modifier = Modifier
                         .padding(padding)
                         .padding(horizontal = 5.dp)
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .fillMaxHeight(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     itemsIndexed(state.contractors) { index, contractor ->
                         ContractorCard(
                             contractor = contractor,
-                            lastItemPaddingBottom = if (index == state.contractors.lastIndex) 10.dp else 0.dp
+                            modifier = Modifier
+                                .padding(top = 5.dp, bottom = if (index == state.contractors.lastIndex) 10.dp else 0.dp),
+                            onCardClick = { onAction(SearchListAction.OnContractorCardClick(contractor.id)) }
                         )
                     }
                 }

@@ -7,20 +7,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.firmly.core.domain.contractor.ContractorListItem
 
 @Composable
 fun ContractorCard(
     contractor: ContractorListItem,
-    lastItemPaddingBottom: Dp,
+    modifier: Modifier,
     onCardClick: () -> Unit = {}
 ) {
     ElevatedCard(
-        modifier = Modifier
-            .padding(top = 10.dp)
-            .padding(bottom = lastItemPaddingBottom),
+        modifier = modifier,
         onClick = { onCardClick() }
     ) {
         Column(

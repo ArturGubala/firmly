@@ -31,7 +31,7 @@ class RoomLocalContractorDataSource(
     }
 
     override fun getContractorByType(
-        type: Short,
+        type: Boolean,
         numberOfResults: Int
     ): Flow<List<ContractorListItem>> {
         return contractorDao.getContractorByType(type, numberOfResults)
