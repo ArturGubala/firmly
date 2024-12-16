@@ -88,7 +88,7 @@ private fun SearchListScreen(
     onAction: (SearchListAction) -> Unit
 ) {
 
-    var openBottomSheet by remember { mutableStateOf(false) }
+    var openBottomSheet by remember { mutableStateOf(state.contractors.isEmpty()) }
     val bottomSheetState = rememberModalBottomSheetState()
     var showText by remember { mutableStateOf(false) }
 
