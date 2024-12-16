@@ -2,6 +2,7 @@ package com.example.firmly.core.presentation.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedCard
@@ -20,14 +21,16 @@ fun ContractorCard(
         modifier = modifier,
         onClick = { onCardClick() }
     ) {
+
         Column(
-            modifier = Modifier.padding(horizontal = 7.dp, vertical = 5.dp)
+            modifier = modifier.padding(horizontal = 7.dp, vertical = 5.dp)
         ) {
             TextWithTitle(
                 fieldName = "Nazwa",
                 fieldText = contractor.name,
                 bottomSpace = 10.dp
             )
+            Spacer(Modifier.weight(1f))
             Row(
                 Modifier.fillMaxWidth()
             ) {
