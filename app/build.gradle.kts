@@ -71,6 +71,7 @@ dependencies {
 
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material3.adaptive.navigationSuite)
+    implementation(libs.androidx.datastore)
     implementation(libs.androidx.tracing.ktx)
 
     implementation(libs.bundles.koin)
