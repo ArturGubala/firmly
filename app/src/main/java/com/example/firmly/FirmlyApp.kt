@@ -29,6 +29,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import com.example.firmly.contractors.data.di.contractorModule
 import com.example.firmly.contractors.di.contractorViewModelModule
 import com.example.firmly.core.database.di.databaseModule
+import com.example.firmly.core.datastore.di.dataStoreModule
 import com.example.firmly.core.di.appModule
 import com.example.firmly.core.presentation.components.FirmlyBackground
 import com.example.firmly.core.presentation.navigation.FirmlyNavHost
@@ -48,6 +49,7 @@ class FirmlyCore: Application() {
             androidContext(this@FirmlyCore)
             modules(
                 appModule,
+                dataStoreModule,
                 contractorModule,
                 searchViewModelModule,
                 databaseModule,

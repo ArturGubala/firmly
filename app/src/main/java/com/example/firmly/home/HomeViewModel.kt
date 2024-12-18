@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel(
-    private val localContractorDataSource: LocalContractorDataSource,
+    private val localContractorDataSource: LocalContractorDataSource
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(HomeState())
