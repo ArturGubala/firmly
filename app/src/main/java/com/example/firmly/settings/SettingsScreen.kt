@@ -1,21 +1,51 @@
 package com.example.firmly.settings
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.chargemap.compose.numberpicker.*
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
-import com.example.firmly.core.presentation.navigation.PlaceholderScreen
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SettingsRoute(
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    viewModel: SettingsViewModel = koinViewModel()
 ) {
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    SettingsScreen(
+        onBackClick = onBackClick,
+        state = state,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SettingsScreen(
+onBackClick: () -> Unit,
+state: SettingsState,
+) {
+
     Scaffold(
         topBar = {
             FirmlyTopAppBar(
@@ -26,10 +56,37 @@ internal fun SettingsRoute(
             )
         },
         content = { padding ->
-            PlaceholderScreen(
-                routeName = "SETTINGS",
-                modifier = Modifier.padding(padding)
-            )
+            ElevatedCard(
+                modifier = Modifier
+                    .padding(padding)
+                    .padding(horizontal = 10.dp)
+                    .fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier
+                        .padding(all = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    val possibleValues = listOf(5, 10, 15)
+                    var state by remember { mutableIntStateOf(state.numberOfSavedTemporaryContractors) }
+
+                    Text(
+                        text = "Liczba ostatnio przeglądanych kontrahentów, którzy nie zostali zapisani",
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.weight(.7f)
+                            .padding(horizontal = 5.dp)
+                    )
+                    ListItemPicker(
+                        modifier = Modifier.weight(.3f),
+                        label = { it.toString() },
+                        value = state,
+                        onValueChange = { state = it },
+                        list = possibleValues,
+                        dividersColor = MaterialTheme.colorScheme.primary
+                    )
+
+                }
+            }
         }
     )
 }
