@@ -25,6 +25,19 @@ class SettingsViewModel(
             SettingsState(),
         )
 
+    fun onAction(action: SettingsAction) {
+        when (action) {
+            is SettingsAction.OnNumberOfSavedTemporaryContractorsChange -> {
+                viewModelScope.launch {
+                    userPreferencesDataSource.updateData {
+                        it.copy(
+                            numberOfSavedTemporaryContractors = action.numberOfSavedTemporaryContractors)
+                    }
+                }
+            }
+        }
+    }
+
     private fun getUserPreferences() {
         viewModelScope.launch {
             val userPreferences = userPreferencesDataSource.data.first()

@@ -12,9 +12,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -36,14 +33,16 @@ internal fun SettingsRoute(
     SettingsScreen(
         onBackClick = onBackClick,
         state = state,
+        onAction = viewModel::onAction
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SettingsScreen(
-onBackClick: () -> Unit,
-state: SettingsState,
+    onBackClick: () -> Unit,
+    state: SettingsState,
+    onAction: (SettingsAction) -> Unit
 ) {
 
     Scaffold(
@@ -68,7 +67,6 @@ state: SettingsState,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     val possibleValues = listOf(5, 10, 15)
-                    var state by remember { mutableIntStateOf(state.numberOfSavedTemporaryContractors) }
 
                     Text(
                         text = "Liczba ostatnio przeglądanych kontrahentów, którzy nie zostali zapisani",
@@ -79,8 +77,10 @@ state: SettingsState,
                     ListItemPicker(
                         modifier = Modifier.weight(.3f),
                         label = { it.toString() },
-                        value = state,
-                        onValueChange = { state = it },
+                        value = state.numberOfSavedTemporaryContractors,
+                        onValueChange = {
+                            onAction(SettingsAction.OnNumberOfSavedTemporaryContractorsChange(it))
+                        },
                         list = possibleValues,
                         dividersColor = MaterialTheme.colorScheme.primary
                     )
