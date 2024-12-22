@@ -84,7 +84,6 @@ private fun SettingsScreen(
                         list = possibleValues,
                         dividersColor = MaterialTheme.colorScheme.primary
                     )
-
                 }
             }
         }

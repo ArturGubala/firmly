@@ -33,6 +33,12 @@ class SettingsViewModel(
                         it.copy(
                             numberOfSavedTemporaryContractors = action.numberOfSavedTemporaryContractors)
                     }
+
+                    _state.update {
+                        it.copy(
+                            numberOfSavedTemporaryContractors = action.numberOfSavedTemporaryContractors,
+                        )
+                    }
                 }
             }
         }
