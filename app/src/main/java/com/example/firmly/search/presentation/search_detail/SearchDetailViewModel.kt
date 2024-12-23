@@ -1,7 +1,9 @@
 package com.example.firmly.search.presentation.search_detail
 
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.firmly.core.datastore.UserPreferences
 import com.example.firmly.core.domain.contractor.ContractorDetail
 import com.example.firmly.core.domain.contractor.LocalContractorDataSource
 import com.example.firmly.core.domain.contractor.RemoteContractorDataSource
@@ -19,7 +21,8 @@ import kotlinx.coroutines.launch
 class SearchDetailViewModel(
     contractorId: String,
     private val remoteContractorDataSource: RemoteContractorDataSource,
-    private val localContractorDataSource: LocalContractorDataSource
+    private val localContractorDataSource: LocalContractorDataSource,
+    private val userPreferencesDataSource: DataStore<UserPreferences>
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SearchDetailState())
@@ -94,7 +97,8 @@ class SearchDetailViewModel(
                 .getNumberOfTemporaryContractors()
                 .first()
 
-            if (numberOfTemporaryContractors == 5){
+            val userPreferences = userPreferencesDataSource.data.first()
+            if (numberOfTemporaryContractors == userPreferences.numberOfSavedTemporaryContractors){
                 val earlierAddedTemporaryContractorId: String = localContractorDataSource
                     .getIdOfEarliestAddedTemporaryContractor()
                     .first()
