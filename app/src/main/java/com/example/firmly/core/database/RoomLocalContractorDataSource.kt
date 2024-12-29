@@ -40,6 +40,16 @@ class RoomLocalContractorDataSource(
             }
     }
 
+    override fun getContractorsDetailByType(
+        type: Boolean,
+        numberOfResults: Int
+    ): Flow<List<ContractorDetail>> {
+        return contractorDao.getContractorByType(type, numberOfResults)
+            .map { contractorEntities ->
+                contractorEntities.map { it.toContractorDetail() }
+            }
+    }
+
     override suspend fun upsertContractor(contractor: ContractorDetail): Result<ContractorId, DataError.Local> {
         return try {
             val entity = contractor.toContractorEntity()
@@ -52,6 +62,11 @@ class RoomLocalContractorDataSource(
 
     override suspend fun deleteContractor(id: String) {
         contractorDao.deleteContractor(id)
+    }
+
+    override suspend fun deleteContractors(contractors: List<ContractorDetail>) {
+        val entities = contractors.map { it.toContractorEntity() }
+        contractorDao.deleteContractors(entities)
     }
 
     override fun getNumberOfTemporaryContractors(): Flow<Int> {
