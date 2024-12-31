@@ -78,7 +78,7 @@ private fun HomeScreen(
                     Text(
                         text = "Ostatnio zapisani".uppercase(),
                         modifier = Modifier.padding(start = 10.dp),
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.titleMedium
                     )
                     HorizontalDivider(
                         modifier = Modifier
@@ -91,14 +91,15 @@ private fun HomeScreen(
 
                         modifier = Modifier
                             .horizontalScroll(rememberScrollState())
-//                        .padding(horizontal = 5.dp),
+                            .padding(start = 10.dp),
+
                     ) {
                         for (contractor in state.savedContractors) {
                             ContractorCard(
                                 contractor = contractor,
                                 modifier = Modifier
                                     .width(300.dp)
-                                    .padding(top = 5.dp, start = 10.dp)
+                                    .padding(top = 5.dp, end = 10.dp)
                                     .requiredHeight(220.dp),
                             )
                         }
@@ -107,7 +108,7 @@ private fun HomeScreen(
                     Text(
                         text = "Ostatnio przeglądani".uppercase(),
                         modifier = Modifier.padding(start = 10.dp, top = 20.dp),
-                        style = MaterialTheme.typography.titleLarge,
+                        style = MaterialTheme.typography.titleMedium,
                     )
                     HorizontalDivider(
                         modifier = Modifier
@@ -119,14 +120,14 @@ private fun HomeScreen(
                     Row(
                         modifier = Modifier
                             .horizontalScroll(rememberScrollState())
-                            .padding(horizontal = 5.dp),
+                            .padding(start = 10.dp),
                     ) {
                         for (contractor in state.temporaryContractors) {
                             ContractorCard(
                                 contractor = contractor,
                                 modifier = Modifier
                                     .width(300.dp)
-                                    .padding(top = 5.dp, start = 10.dp)
+                                    .padding(top = 5.dp, end = 10.dp)
                                     .height(220.dp),
                             )
                         }
