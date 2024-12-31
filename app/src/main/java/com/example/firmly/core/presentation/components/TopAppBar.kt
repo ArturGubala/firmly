@@ -25,8 +25,8 @@ import com.example.firmly.ui.theme.FirmlyTheme
 @Composable
 fun FirmlyTopAppBar(
     @StringRes titleRes: Int?,
-    navigationIcon: ImageVector,
-    navigationIconContentDescription: String,
+    navigationIcon: ImageVector? = null,
+    navigationIconContentDescription: String? = null,
     onNavigationClick: () -> Unit = {},
     modifier: Modifier = Modifier,
     colors: TopAppBarColors = TopAppBarDefaults.centerAlignedTopAppBarColors(),
@@ -36,12 +36,14 @@ fun FirmlyTopAppBar(
         title = { titleRes?.let { Text(text = stringResource(id = it)) } },
 
         navigationIcon = {
-            IconButton(onClick = onNavigationClick) {
-                Icon(
-                    imageVector = navigationIcon,
-                    contentDescription = navigationIconContentDescription,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
+            if (navigationIcon != null) {
+                IconButton(onClick = onNavigationClick) {
+                    Icon(
+                        imageVector = navigationIcon,
+                        contentDescription = navigationIconContentDescription,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
             }
         },
         actions = actions,
