@@ -176,7 +176,7 @@ fun DetailScreenContent(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        if (contractorDetail.creationDate != 0L) {
+        if (contractorDetail.creationDate != 0L && !contractorDetail.temporary) {
             Row {
                 Text(
                     text = "Ostatnia aktualizacja danych: $formattedDate.",

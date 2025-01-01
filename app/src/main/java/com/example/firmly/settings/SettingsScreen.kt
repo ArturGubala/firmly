@@ -1,5 +1,6 @@
 package com.example.firmly.settings
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -14,11 +15,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chargemap.compose.numberpicker.*
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
+import com.example.firmly.core.presentation.util.ObserveAsEvents
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,6 +32,17 @@ internal fun SettingsRoute(
 ) {
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    ObserveAsEvents(viewModel.events) { event ->
+        when (event) {
+            is SettingsEvent.Success -> {
+                Toast.makeText(
+                    context,
+                    event.message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }}
 
     SettingsScreen(
         onBackClick = onBackClick,
