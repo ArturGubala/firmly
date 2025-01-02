@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.chargemap.compose.numberpicker.*
@@ -96,7 +97,12 @@ private fun SettingsScreen(
                             onAction(SettingsAction.OnNumberOfSavedTemporaryContractorsChange(it))
                         },
                         list = possibleValues,
-                        dividersColor = MaterialTheme.colorScheme.primary
+                        dividersColor = MaterialTheme.colorScheme.primary,
+                        textStyle = TextStyle(
+                            color = MaterialTheme.colorScheme.onSurface,
+                            fontSize = MaterialTheme.typography.titleMedium.fontSize,
+                            fontFamily = MaterialTheme.typography.titleMedium.fontFamily
+                        ),
                     )
                 }
             }
