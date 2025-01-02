@@ -10,11 +10,11 @@ Firmly is integrated with the **[CEIDG WEB API](https://dane.biznes.gov.pl/pl/po
 
 ## Screenshots
 
-![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_main.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
-![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_contractors_saved_list.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
-![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_contractors_saved_detail.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
-![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_contractors_visited_detail.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
-![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_search_form.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
-![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_search_list.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
-![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_search_detail.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
-![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_settings.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
+![Screenshot showing home_screen](docs/images/firmly_main.png "Screenshot showing home screen screen")
+![Screenshot showing contractors_saved_list_screen](docs/images/firmly_contractors_saved_list.png "Screenshot showing contractors saved list screen")
+![Screenshot showing contractors_saved_detail_screen](docs/images/firmly_contractors_saved_detail.png "Screenshot contractors saved detail screen")
+![Screenshot showing contractors_visited_detail_screen](docs/images/firmly_contractors_visited_detail.png "Screenshot contractors visited detail screen")
+![Screenshot showing search_form screen](docs/images/firmly_search_form.png "Screenshot showing search form screen")
+![Screenshot showing search_list screen](docs/images/firmly_search_list.png "Screenshot showing search list screen")
+![Screenshot showing search_detail screen](docs/images/firmly_search_detail.png "Screenshot showing search detail screen")
+![Screenshot showing settings screen](docs/images/firmly_settings.png "Screenshot showing settings screen")
