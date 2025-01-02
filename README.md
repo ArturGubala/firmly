@@ -18,4 +18,3 @@ Firmly is integrated with the **[CEIDG WEB API](https://dane.biznes.gov.pl/pl/po
 ![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_search_list.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
 ![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_search_detail.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
 ![Screenshot showing For You screen, Interests screen and Topic detail screen](docs/images/firmly_settings.png "Screenshot showing For You screen, Interests screen and Topic detail screen")
-https://github.com/ArturGubala/firmly/blob/main/docs/images/firmly_record.mp4
