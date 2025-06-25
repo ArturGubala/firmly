@@ -12,4 +12,5 @@
     <string name="tab_contractors">Kontrahenci</string>
     <string name="tab_search">Wyszukiwarka</string>
     <string name="tab_settings">Ustawienia</string>
+    <string name="no_data">Brak danych</string>
 </resources>
