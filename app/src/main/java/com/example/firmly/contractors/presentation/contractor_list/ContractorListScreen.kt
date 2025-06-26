@@ -32,6 +32,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.example.firmly.contractors.navigation.navigateToContractorDetail
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
+import com.example.firmly.core.presentation.components.NoDataPlaceholder
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
 import kotlinx.coroutines.launch
@@ -98,6 +99,10 @@ private fun ContractorListScreen(
                 ) {
                     CircularProgressIndicator()
                 }
+            } else if (state.contractors.isEmpty()) {
+                NoDataPlaceholder(
+                    modifier = Modifier.fillMaxSize()
+                )
             } else {
                 Column(
                     modifier = Modifier.padding(padding)

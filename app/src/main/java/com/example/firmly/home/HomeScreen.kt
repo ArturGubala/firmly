@@ -1,9 +1,7 @@
 package com.example.firmly.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
-import androidx.compose.foundation.layout.Arrangement.Absolute.spacedBy
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,14 +22,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.firmly.R
 import com.example.firmly.core.presentation.components.ContractorCard
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
+import com.example.firmly.core.presentation.components.NoDataPlaceholder
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import org.koin.androidx.compose.koinViewModel
 
@@ -135,31 +130,9 @@ private fun HomeScreen(
                     }
                 }
             } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(.7f),
-                        verticalArrangement = spacedBy(
-                            space = 20.dp,
-                            alignment = Alignment.CenterVertically
-                        ),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.ic_no_data_cuate),
-                            contentDescription = null,
-                            contentScale = ContentScale.Inside,
-                        )
-                        Text(
-                            text = stringResource(R.string.no_data).lowercase(),
-                            style = MaterialTheme.typography.titleSmall
-                        )
-                    }
-                }
+                NoDataPlaceholder(
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
     )
