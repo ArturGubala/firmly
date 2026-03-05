@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class SearchListViewModel(
     private val remoteContractorDataSource: RemoteContractorDataSource
-): ViewModel() {
+) : ViewModel() {
 
     var state by mutableStateOf(SearchListState())
         private set
@@ -25,96 +25,113 @@ class SearchListViewModel(
     val events = eventChannel.receiveAsFlow()
 
     fun onAction(action: SearchListAction) {
-        when(action) {
+        when (action) {
             is SearchListAction.OnSearchContractorClick -> {
                 search()
             }
+
+            SearchListAction.LoadNextPage -> {
+                loadNextPage()
+            }
+
             is SearchListAction.OnNameFieldEnter -> {
                 if (action.name.matches(Regex("^[\\w\\s\\W\\SąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$"))) {
 
-                    state = state.copy(queryParameters = ContractorQueryParameters(
-                        name = action.name,
-                        city = state.queryParameters.city,
-                        firstName = state.queryParameters.firstName,
-                        lastName = state.queryParameters.lastName,
-                        taxNumber = state.queryParameters.taxNumber,
-                        businessRegistryNumber = state.queryParameters.businessRegistryNumber,
-                        status = "AKTYWNY"
-                    )
+                    state = state.copy(
+                        queryParameters = ContractorQueryParameters(
+                            name = action.name,
+                            city = state.queryParameters.city,
+                            firstName = state.queryParameters.firstName,
+                            lastName = state.queryParameters.lastName,
+                            taxNumber = state.queryParameters.taxNumber,
+                            businessRegistryNumber = state.queryParameters.businessRegistryNumber,
+                            status = "AKTYWNY"
+                        )
                     )
                 }
             }
+
             is SearchListAction.OnCityFieldEnter -> {
                 if (action.city.matches(Regex("^[\\w\\s\\W\\SąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$"))) {
-                    state = state.copy(queryParameters = ContractorQueryParameters(
-                        name = state.queryParameters.name,
-                        city = action.city,
-                        firstName = state.queryParameters.firstName,
-                        lastName = state.queryParameters.lastName,
-                        taxNumber = state.queryParameters.taxNumber,
-                        businessRegistryNumber = state.queryParameters.businessRegistryNumber,
-                        status = "AKTYWNY"
-                    )
+                    state = state.copy(
+                        queryParameters = ContractorQueryParameters(
+                            name = state.queryParameters.name,
+                            city = action.city,
+                            firstName = state.queryParameters.firstName,
+                            lastName = state.queryParameters.lastName,
+                            taxNumber = state.queryParameters.taxNumber,
+                            businessRegistryNumber = state.queryParameters.businessRegistryNumber,
+                            status = "AKTYWNY"
+                        )
                     )
                 }
             }
+
             is SearchListAction.OnFirstNameFieldEnter -> {
                 val firstNameWithOutWhiteChars = action.firstName.trim()
                 if (firstNameWithOutWhiteChars.matches(Regex("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ]*$"))) {
-                    state = state.copy(queryParameters = ContractorQueryParameters(
-                        name = state.queryParameters.name,
-                        city = state.queryParameters.city,
-                        firstName = firstNameWithOutWhiteChars,
-                        lastName = state.queryParameters.lastName,
-                        taxNumber = state.queryParameters.taxNumber,
-                        businessRegistryNumber = state.queryParameters.businessRegistryNumber,
-                        status = "AKTYWNY"
-                    )
+                    state = state.copy(
+                        queryParameters = ContractorQueryParameters(
+                            name = state.queryParameters.name,
+                            city = state.queryParameters.city,
+                            firstName = firstNameWithOutWhiteChars,
+                            lastName = state.queryParameters.lastName,
+                            taxNumber = state.queryParameters.taxNumber,
+                            businessRegistryNumber = state.queryParameters.businessRegistryNumber,
+                            status = "AKTYWNY"
+                        )
                     )
                 }
             }
+
             is SearchListAction.OnLastNameFieldEnter -> {
                 if (action.lastName.replace(" ", "").matches(Regex("^[a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ\\-]*$"))) {
-                    state = state.copy(queryParameters = ContractorQueryParameters(
-                        name = state.queryParameters.name,
-                        city = state.queryParameters.city,
-                        firstName = state.queryParameters.firstName,
-                        lastName = action.lastName,
-                        taxNumber = state.queryParameters.taxNumber,
-                        businessRegistryNumber = state.queryParameters.businessRegistryNumber,
-                        status = "AKTYWNY"
-                    )
+                    state = state.copy(
+                        queryParameters = ContractorQueryParameters(
+                            name = state.queryParameters.name,
+                            city = state.queryParameters.city,
+                            firstName = state.queryParameters.firstName,
+                            lastName = action.lastName,
+                            taxNumber = state.queryParameters.taxNumber,
+                            businessRegistryNumber = state.queryParameters.businessRegistryNumber,
+                            status = "AKTYWNY"
+                        )
                     )
                 }
             }
+
             is SearchListAction.OnTaxNumberFieldEnter -> {
                 if (action.taxNumber.length <= 11 && action.taxNumber.isDigitsOnly()) {
-                    state = state.copy(queryParameters = ContractorQueryParameters(
-                        name = state.queryParameters.name,
-                        city = state.queryParameters.city,
-                        firstName = state.queryParameters.firstName,
-                        lastName = state.queryParameters.lastName,
-                        taxNumber = action.taxNumber,
-                        businessRegistryNumber = state.queryParameters.businessRegistryNumber,
-                        status = "AKTYWNY"
-                    )
+                    state = state.copy(
+                        queryParameters = ContractorQueryParameters(
+                            name = state.queryParameters.name,
+                            city = state.queryParameters.city,
+                            firstName = state.queryParameters.firstName,
+                            lastName = state.queryParameters.lastName,
+                            taxNumber = action.taxNumber,
+                            businessRegistryNumber = state.queryParameters.businessRegistryNumber,
+                            status = "AKTYWNY"
+                        )
                     )
                 }
             }
+
             is SearchListAction.OnBusinessRegistryNumberFieldEnter -> {
                 if (action.businessRegistryNumber.length <= 9 && action.businessRegistryNumber.isDigitsOnly()) {
-                    state = state.copy(queryParameters = ContractorQueryParameters(
-                        name = state.queryParameters.name,
-                        city = state.queryParameters.city,
-                        firstName = state.queryParameters.firstName,
-                        lastName = state.queryParameters.lastName,
-                        taxNumber = state.queryParameters.taxNumber,
-                        businessRegistryNumber = action.businessRegistryNumber,
-                        status = "AKTYWNY"
-                    )
+                    state = state.copy(
+                        queryParameters = ContractorQueryParameters(
+                            name = state.queryParameters.name,
+                            city = state.queryParameters.city,
+                            firstName = state.queryParameters.firstName,
+                            lastName = state.queryParameters.lastName,
+                            taxNumber = state.queryParameters.taxNumber,
+                            businessRegistryNumber = action.businessRegistryNumber,
+                            status = "AKTYWNY"
+                        )
                     )
                 }
             }
+
             is SearchListAction.OnContractorCardClick -> {
                 viewModelScope.launch {
                     eventChannel.send(SearchListEvent.NavigateToDetail(action.contractorId))
@@ -127,24 +144,56 @@ class SearchListViewModel(
 
     private fun search() {
         viewModelScope.launch {
-            state = state.copy(isLoading = true)
-            val result = remoteContractorDataSource.getContractorList(state.queryParameters.toMap())
+            state = state.copy(isLoading = true, page = 1)
+            val result = remoteContractorDataSource.getContractorList(
+                state.queryParameters.copy(page = "1").toMap()
+            )
 
-            when(result) {
+            when (result) {
                 is Result.Error -> {
                     state = state.copy(
-                        contractors = emptyList()
+                        contractors = emptyList(),
+                        isLoading = false
                     )
                     eventChannel.send(SearchListEvent.Error(result.error.toString()))
                 }
+
                 is Result.Success -> {
                     state = state.copy(
-                        contractors = result.data
+                        contractors = result.data,
+                        isLoading = false,
+                        endReached = result.data.isEmpty()
                     )
                 }
             }
+        }
+    }
 
-            state = state.copy(isLoading = false)
+    private fun loadNextPage() {
+        viewModelScope.launch {
+            if (state.isNextPageLoading || state.endReached) {
+                return@launch
+            }
+            state = state.copy(isNextPageLoading = true)
+            val result = remoteContractorDataSource.getContractorList(
+                state.queryParameters.copy(page = (state.page + 1).toString()).toMap()
+            )
+
+            when (result) {
+                is Result.Error -> {
+                    state = state.copy(isNextPageLoading = false)
+                    eventChannel.send(SearchListEvent.Error(result.error.toString()))
+                }
+
+                is Result.Success -> {
+                    state = state.copy(
+                        contractors = state.contractors + result.data,
+                        isNextPageLoading = false,
+                        page = state.page + 1,
+                        endReached = result.data.isEmpty()
+                    )
+                }
+            }
         }
     }
 

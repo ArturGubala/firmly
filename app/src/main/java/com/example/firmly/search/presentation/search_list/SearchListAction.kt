@@ -2,6 +2,7 @@ package com.example.firmly.search.presentation.search_list
 
 sealed interface SearchListAction {
     data object OnSearchContractorClick: SearchListAction
+    data object LoadNextPage: SearchListAction
     data class OnNameFieldEnter(val name: String) : SearchListAction
     data class OnCityFieldEnter(val city: String) : SearchListAction
     data class OnFirstNameFieldEnter(val firstName: String) : SearchListAction

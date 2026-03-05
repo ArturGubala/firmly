@@ -7,4 +7,7 @@ data class SearchListState(
     val contractors: List<ContractorListItem> = emptyList(),
     val queryParameters: ContractorQueryParameters = ContractorQueryParameters(),
     val isLoading: Boolean = false,
+    val isNextPageLoading: Boolean = false,
+    val page: Int = 1,
+    val endReached: Boolean = false
 )

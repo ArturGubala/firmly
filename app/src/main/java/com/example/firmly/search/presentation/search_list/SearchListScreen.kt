@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -31,6 +32,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -91,6 +93,7 @@ private fun SearchListScreen(
     var openBottomSheet by remember { mutableStateOf(state.contractors.isEmpty()) }
     val bottomSheetState = rememberModalBottomSheetState()
     var showText by remember { mutableStateOf(false) }
+    val listState = rememberLazyListState()
 
     Scaffold(
         topBar = {
@@ -122,6 +125,7 @@ private fun SearchListScreen(
                 }
             } else {
                 LazyColumn(
+                    state = listState,
                     modifier = Modifier
                         .padding(padding)
                         .padding(horizontal = 5.dp)
@@ -130,12 +134,25 @@ private fun SearchListScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     itemsIndexed(state.contractors) { index, contractor ->
+                        if (index == state.contractors.size - 1 && !state.endReached && !state.isNextPageLoading) {
+                            LaunchedEffect(key1 = true) {
+                                onAction(SearchListAction.LoadNextPage)
+                            }
+                        }
+
                         ContractorCard(
                             contractor = contractor,
                             modifier = Modifier
                                 .padding(top = 5.dp, bottom = if (index == state.contractors.lastIndex) 10.dp else 0.dp),
                             onCardClick = { onAction(SearchListAction.OnContractorCardClick(contractor.id)) }
                         )
+                    }
+                    if (state.isNextPageLoading) {
+                        item {
+                            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                                CircularProgressIndicator()
+                            }
+                        }
                     }
                 }
             }
