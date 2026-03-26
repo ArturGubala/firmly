@@ -13,6 +13,7 @@ fun DataError.toString(context: Context): String {
         DataError.Network.SERVER_ERROR -> R.string.error_unknown
         DataError.Network.SERIALIZATION -> R.string.error_serialization
         DataError.Network.UNKNOWN -> R.string.error_unknown
+        DataError.Network.SERVICE_UNAVAILABLE -> R.string.error_service_unavailable
     }
     return context.getString(resId)
 }
