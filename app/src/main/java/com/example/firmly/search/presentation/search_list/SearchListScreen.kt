@@ -48,6 +48,7 @@ import com.example.firmly.core.presentation.components.ContractorCard
 import com.example.firmly.core.presentation.components.FirmlyTopAppBar
 import com.example.firmly.core.presentation.navigation.TopLevelDestination
 import com.example.firmly.core.presentation.util.ObserveAsEvents
+import com.example.firmly.core.presentation.util.toString
 import com.example.firmly.search.navigation.navigateToSearchDetail
 import org.koin.androidx.compose.koinViewModel
 
@@ -64,7 +65,7 @@ internal fun SearchListRoute(
             is SearchListEvent.Error -> {
                 Toast.makeText(
                     context,
-                    event.error,
+                    event.error.toString(context),
                     Toast.LENGTH_LONG
                 ).show()
             }

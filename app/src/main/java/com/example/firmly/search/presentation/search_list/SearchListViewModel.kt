@@ -155,7 +155,7 @@ class SearchListViewModel(
                         contractors = emptyList(),
                         isLoading = false
                     )
-                    eventChannel.send(SearchListEvent.Error(result.error.toString()))
+                    eventChannel.send(SearchListEvent.Error(result.error))
                 }
 
                 is Result.Success -> {
@@ -182,7 +182,7 @@ class SearchListViewModel(
             when (result) {
                 is Result.Error -> {
                     state = state.copy(isNextPageLoading = false)
-                    eventChannel.send(SearchListEvent.Error(result.error.toString()))
+                    eventChannel.send(SearchListEvent.Error(result.error))
                 }
 
                 is Result.Success -> {
